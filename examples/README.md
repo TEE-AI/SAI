@@ -30,14 +30,14 @@
 1. 根据需要定制`Preprocessor`: 继承`Preprocessor`基类，实现`process`方法，该方法接收一个`cv::Mat`做为输入，返回处理后的`cv::Mat`
 2. 根据需要定制回调函数及函数参数：回调函数类型请见`LPResultCB`
 3. 编写程序，主要步骤为
-3.1 调用`ParseArgs`解析命令行参数
-3.2 创建`ImageReader`及第1步中自定义的`Preprocessor`子类的实例
-3.3 创建`EngineWrapper`实例
-3.3.1 生成`NXEngineConfig`: 调用`GenerateEngineConfigFromCmdArgs`从命令行参数生成`NXEngineConfig`的基础字段，再将第2步中定义的回调函数及参数赋给`NXEngineConfig`的`pCB`, `pCBData`字段
-3.3.2 将`NXEngineConfig`传入`EngineWrapper`构造函数，生成`EngineWrapper`实例
-3.4 创建`Launcher`实例，将`Reader`, `Preprocessor`和`EngineWrapper`实例传入其构造函数
-3.5 调用`Launcher`的`run`方法，启动执行流程
-3.6 清理资源并销毁引擎
+    3.1 调用`ParseArgs`解析命令行参数
+    3.2 创建`ImageReader`及第1步中自定义的`Preprocessor`子类的实例
+    3.3 创建`EngineWrapper`实例
+        3.3.1 生成`NXEngineConfig`: 调用`GenerateEngineConfigFromCmdArgs`从命令行参数生成`NXEngineConfig`的基础字段，再将第2步中定义的回调函数及参数赋给`NXEngineConfig`的`pCB`, `pCBData`字段
+        3.3.2 将`NXEngineConfig`传入`EngineWrapper`构造函数，生成`EngineWrapper`实例
+    3.4 创建`Launcher`实例，将`Reader`, `Preprocessor`和`EngineWrapper`实例传入其构造函数
+    3.5 调用`Launcher`的`run`方法，启动执行流程
+    3.6 清理资源并销毁引擎
 4. 代码位置: cpp/src/demo.cpp
 
 
