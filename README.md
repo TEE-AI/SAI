@@ -1,12 +1,14 @@
 # TEE Simple AI (SAI) 用户手册V1.0
 本文档内容来自于北京梯易易科技有限公司（TEE），基于本文档内容，可用于评估本公司产品的性能，本文档包括环境创建，基于Pytorch工具的量化模型训练，模型转换，以及如何快速部署在Windows, Linux等平台。
 
-## SAI概要
+## 简介
 SAI是基于PyTorch的卷积神经网络模型训练，转换，部署工具——可用于将float型卷积神经网络模型转换为定点量化模型（1bit或者3bit），并可通过TEE公司的算力棒来运行，或者从头开始训练量化模型。部署的时候可使用主机的CPU和TEE公司的算力棒通过联合通信进行推断，支持Windows，Linux等主流平台。
 
 基于SAI和本公司出品的算力棒，可以非常方便的训练一个精度损失较低的量化模型，并转换成可以在算力棒上运行的模型，基于转换好的模型，最后SAI还为开发者提供了快速的部署到Windows, Linux等平台的一键部署工具。
 
-## 硬件与系统要求
+## 环境依赖
+
+### 硬件与系统要求
 SAI运行环境对主机配置的相关要求如下：
 * CPU >= Intel i5 (推荐i7) 
 * 内存 >=8 GB
@@ -15,8 +17,8 @@ SAI运行环境对主机配置的相关要求如下：
 * Windows 10
 * Ubuntu LTS 16.04
 
-## 软件环境依赖
-### Python
+### 软件环境依赖
+#### Python
 推荐直接安装anaconda集成python环境，python2.7或者python3.7均可，可在 https://www.anaconda.com/download/ 上根据自己的系统选择下载Windows或者Linux的安装包进行安装。
 
 安装完成后可以在控制台（Windows下打开Windows Command Prompt， Linux下打开Terminal）输入以下命令来确认python环境是否安装成功
@@ -28,7 +30,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
 
-### Pytorch
+#### Pytorch
 Pytorch是Facebook开源的一款神经网络框架，可在官网 https://pytorch.org/ 自行选择和你的环境相符合的下载命令进行安装，安装完成后，可在控制台（Windows下打开Windows Command Prompt， Linux下打开Terminal）输入以下命令来确认pytorch环境是否安装成功
 
 ```
@@ -36,7 +38,7 @@ Pytorch是Facebook开源的一款神经网络框架，可在官网 https://pytor
 >>> import torchvision
 ```
 
-### CUDA (可选)
+#### CUDA (可选)
 推荐使用GPU来跑训练，CPU跑训练实在是太慢，你会无法忍受的，^o^.     
 
 若要使用GPU来训练，就需要安装CUDA.一般来说，需要通过以下几步安装CUDA
@@ -51,8 +53,7 @@ Pytorch是Facebook开源的一款神经网络框架，可在官网 https://pytor
 >>> torch.cuda.is_available()
 ```
 
-
-## 安装算力棒驱动
+#### 安装算力棒驱动
 将SAI_v1.0.zip解压，Windows 10系统会自动安装驱动，Linux系统需要一些额外的步骤，请参考以下命令为算力棒安装驱动
 
 ```
@@ -60,16 +61,18 @@ $ sudo cp lib/libftd3xx.so.0.5.21 /usr/lib/
 $ sudo cp lib/*.rules /etc/udev/rules.d/
 ```
 
-## 训练数据准备
-将你的训练数据分为train和val两个目录，基于标签数目N，创建0 -- N-1个子目录，每个子目录中放入对应标签的图像数据。然后将train和val两个目录放置于SAI_ROOT/data目录下。
+## 模型训练(SAI_ROOT/train)
 
-## 模型训练与转换
+### 训练数据准备
+将你的训练数据分为train和val两个目录，基于标签数目N，创建0~N-1个子目录，每个子目录中放入对应标签的图像数据。然后将train和val两个目录放置于SAI_ROOT/train/data目录下。
+
+### 模型训练与转换
 因为TEE算力棒仅支持VGG类型的卷积结构，所以SAI的模型训练工具也只提供了基于VGG类型的网络模型训练。当前版本支持三种类型的VGG网络：
 - teeNet1: 标准的VGG16网络，包括13个卷积结构和3个全连接层
 - teeNet2: 简化后的VGG网络，包括18个卷积结构，1个GAP层，1个全连接层
 - teeNet3: 去掉全连接层后的VGG网络，包括16个卷积结构
 
-SAI通过加载training.json文件来进行模型训练与转换，training.json文件放置在SAI_ROOT目录下，可通过文本编辑器对其进行编辑修改。training.json文件里的每个关键词描述如下：
+SAI通过加载training.json文件来进行模型训练与转换，training.json文件放置在SAI_ROOT/train目录下，可通过文本编辑器对其进行编辑修改。training.json文件里的每个关键词描述如下：
 * num_classes – 类别数目
 * max_epoch – 最大迭代次数 
 * learning_rate – 学习率 
@@ -89,50 +92,86 @@ SAI通过加载training.json文件来进行模型训练与转换，training.json
 
 *Tips: 关于模型训练，我们建议先使用full模式训练一个全精度的模型F，再通过加载这个全精度模型F来finetune训练量化模型，得到最终的可部署模型。*
 
-## 推断部署
-通过前面的模型训练与转换步骤，得到了可以在算力棒上运行部署的模型，接下来我们可以通过SAI的infer工具，结合分类任务，将该模型快速的部署到终端设备上。TEE_SAI SDK目前支持windows/linux/arm-linux三个平台的推断部署，后续会增加android/ios等平台支持。
 
-<font color=#FF0000>当前版本仅提供了针对teeNet1网络结构的分类任务推断部署。</font>
+## 推断部署(SAI_ROOT/api)
 
-下面我们详细介绍3种平台的推断的编译和部署。首先进入SAI_ROOT/infer/目录，可根据实际需要部署的平台选择Windows，Linux或者Arm-Linux文件夹下的部署工具。
+通过前面的模型训练与转换步骤，得到了可以在算力棒上运行部署的模型，接下来我们可以通过SAI的Infer工具(TEE_AI SDK)，结合分类任务，将该模型快速的部署到终端设备上。
 
-| 平台 | 依赖 | 描述 |
-| ------ | ------ | ------ |
-| Windows | OpenCV/OpenBLAS/FFmpeg | TEE发布包中已包含，无需编译 |
-| Linux | OpenCV/FFmpeg | TEE发布包中已包含，需要时编译 |
-| ARM Linux | OpenCV/FFmpeg/QT | TEE发布包中已包含，需要时编译 |
+目前Infer工具支持windows/linux/arm-linux三个平台的推断部署，后续会增加android/ios等平台支持。
 
-此处FFmpeg和QT依赖只是用于显示demo和界面。实际部署时可以根据使用场景选择是否去掉。
+### TEE_AI SDK
+所有的推断和部署需要供助于我们所发布的工具库(位于SAI_ROOT/api目录下)来实施，工具库提供了创建推荐引擎，传入样本进行推断，以及资源清理等步骤的函数接口，下面结合头文件INXInferenceEngine.h详细介绍该工具库的使用流程。
 
-*Tips：以Windows平台为例，请将前面转换好的conv.dat和fc.dat文件拷贝到SAI_ROOT/infer/windows/bin/model目录下，运行run.bat即可看到演示界面。如果需要修改类别数或者输出显示方式或者其他后处理，可以打开SAI_ROOT/infer/windows/目录下的TEE_SAI.sln工程自行修改定制。*
+#### 创建引擎
+创建推断引擎之前需要先设定好引擎参数，具体的数据结构如下：
 
-### Windows平台
+```
+/* Inference engine send result data callback function */
+typedef NXRet(*LPResultCB)(nxvoid *pPrivateData, nxui8 const *retBuf, nxi32 bufLen, nxui64 id, nxi32 classNum);
 
-| 文件 | 功能 | 描述 |
-| ------ | ------ | ------ |
-| windows/TEE_SAI.sh | windows平台推断工程 | 需要Visual Studio 2015版本及以上 |
-| windows/lib | windows平台编译和运行需要的静态库和动态库 |  |
-| windows/bin | windows平台编译输出和运行目录 | 将model文件夹复制到此目录下，直接双击运行run.bat |
+/* Inference engine config */
+typedef struct {
+	nxi32 stickNum;				// 使用算力棒的个数
+	nxi32 threadNum;			// 引擎启动的线程数
+	nxi32 netType;				// 网络类型：1-teeNet1, 2-teeNet2, 3-teeNet3
+	nxi32 classNum;				// 分类结果的类数
+	nxi8 const *modelPath; 		// 算力棒模型/后处理模型文件所在目录(绝对路径)
+	nxi8 const *stickCNNName; 	// 算力棒模型文件名(绝对路径)
+	nxi8 const *hostNetName; 	// 后处理模型文件名(绝对路径)
+	LPResultCB pCB;				// 引擎回调函数
+	nxvoid *pCBData;			// 引擎回调函数自定义参数(即pPrivateData)
+} NXEngineConf;
+```
 
-### Linux平台
+设定好引擎参数后，同时传入一个nxvoid**类型的变量，调用以下函数生成引擎，生成的引擎由*ppEngine指向的内存区域所表示。回调函数将在下一小节介绍。
 
-| 文件 | 功能 | 描述 |
-| ------ | ------ | ------ |
-| linux/CMakeLists.txt | Linux平台编译文件 |  |
-| linux/lib | Linux平台编译和运行需要的静态库和动态库 |  |
-| linux/build | Linux平台独立编译目录 | `cd build`<br>` cmake .`<br>`make` |
-| linux/bin | Linux平台运行目录 | 将编译生成的可执行文件TEEClassifierDemo和model文件夹拷贝到此目录，运行run.sh |
+```
+/*  Create inference engine */
+NXRet NXDLL NXCreateInferenceEngine(nxvoid **ppEngine, NXEngineConf const *pConf);
+```
 
-### ARM Linux平台
+#### 调用引擎进行推断
+调用引擎前需要按照指定格式准备好图像数据，其对应的数据结构为
 
-| 文件 | 功能 | 描述 |
-| ------ | ------ | ------ |
-| arm64/CMakeLists.txt | ARM64 Linux平台编译文件 |  |
-| arm64/lib | ARM64 Linux平台编译和运行需要的静态库和动态库 |  |
-| arm64/build | ARM64 Linux平台独立编译目录 | `cd build`<br>` cmake-gui .`<br>`make` |
-| arm64/bin | ARM64 Linux平台运行目录 | 将编译生成的可执行文件TEEClassifierDemo和model文件夹拷贝到此目录，运行run.sh |
+```
+// 像素格式
+typedef enum {
+	ePixfmtBGR = 0, // BGRBGR
+	ePixfmtRGB = 1, // RGBRGB
+} NXPixFmt;
 
-编译aarch64 linux时需要使用linaro的交叉编译工具，SAI_ROOT/arm64/toolchains/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz为交叉编译工具。
+// 图像
+typedef struct {
+	nxi32 w;			// 图像宽度
+	nxi32 h;			// 图像高度
+	NXPixFmt pixfmt;	// 像素格式
+	nxui8 *data;		// 具体数据
+} NXImg;
+```
 
+准备完成后，调用以下接口对图像进行推断，其中engine参数即为上一步中所创建的引擎。该接口以非阻塞模式执行，函数将直接返回并在推断在完成后执行NXEngineConf.pCB回调函数，并以NXEngineConf.pCBData作为回调函数的第一个参数传入。回调函数可以由用户自行定制。
+
+```
+/* send an image to engine and engine set *pID value. engine will send the id to callback function */
+NXRet NXDLL NXPushTask(nxvoid *engine, NXImg const *pImg, nxui64 *pID);
+```
+
+#### 清理收尾工作并销毁引擎
+以下函数将等待所有已经被Push的任务处理完成
+
+```
+/* clear all task */
+NXRet NXDLL NXClearAllTask(nxvoid *engine);
+```
+
+确认不再使用引擎时可调用以下接口销毁引擎
+
+```
+/* destroy inference engine */
+NXRet NXDLL NXDestroyInferenceEngine(nxvoid *pEngine);
+```
+
+### 使用样例(DEMO)
+位于SAI_ROOT/examples目录下的代码中提供了SDK的使用样例，详细内容请见该目录下的README文件。
 
 
