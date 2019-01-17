@@ -17,13 +17,13 @@
   * 基类只定义了接口，传入一个`cv::Mat`类型的图像，返回处理后的图像
   * 用户可根据需求生成子类并进行定制
 * EngineWrapper
-  * SDK接口函数的简单封装，创建时需要传入`EngineConfig*`类型参数
-  * `EngineConfig`中需指定模型路径，Engine所启用的线程数等参数，同时需要指定Engine处理每个样本后的回调函数及参数
+  * SDK接口函数的简单封装，创建时需要传入`NXEngineConfig*`类型参数
+  * `NXEngineConfig`中需指定模型路径，Engine所启用的线程数等参数，同时需要指定Engine处理每个样本后的回调函数及参数
   * 对外暴露`create`, `push`, `clear`方法，并在析构时清理所占资源
 * Lanucher
   * 负责组装以上三个组件并启动执行流程
   * 创建时接收`Reader*`, `Preprocessor*`, `EngineWrapper*`三个类型的参数
-* 调用`run()`方法启动执行
+  * 调用`run()`方法启动执行
 
 ## DEMO开发步骤
 开发者可以使用以上框架进行DEMO开发，具体步骤为
@@ -38,8 +38,13 @@
     * 创建`Launcher`实例，将`Reader`, `Preprocessor`和`EngineWrapper`实例传入其构造函数
     * 调用`Launcher`的`run`方法，启动执行流程
     * 清理资源并销毁引擎
-* 代码位置: cpp/src/demo.cpp
 
+代码目录结构
 
-
+| 文件 | 功能 | 描述 |
+| ------ | ------ | ------ |
+| cpp/src | DEMO源代码 |  |
+| cpp/windows/TEE_SAI.sln | windows平台工程 | 需要Visual Studio 2015版本及以上 |
+| cpp/windows/lib | windows平台编译和运行需要的静态库和动态库 |  |
+| cpp/windows/bin | windows平台编译输出和运行目录 | 直接双击运行run.bat |
 
