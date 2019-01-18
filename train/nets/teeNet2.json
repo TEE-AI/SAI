@@ -1,0 +1,63 @@
+{
+  "model": [
+    {
+      "Network name": "Gnet18",
+      "Major layer number": 5,
+      "Filter path": "infile"
+    }
+  ],
+  "layer": [
+    {
+      "Major layer": 1,
+      "image size": 224,
+      "input channels": 3,
+      "output channels": 64,
+      "sublayer number": 2,
+      "scaling": [13,14],
+      "pooling": true,
+      "coef bits": 3 
+    },
+    {
+      "Major layer": 2,
+      "image size": 112,
+      "input channels": 64,
+      "output channels": 64,
+      "sublayer number": 4,
+      "scaling": [14,13,13,13],
+      "pooling": true,
+      "coef bits": 3
+    },
+    {
+      "Major layer": 3,
+      "image size": 56,
+      "input channels": 64,
+      "output channels": 128,
+      "sublayer number": 4,
+      "scaling": [13,13,13,13],
+      "pooling": true,
+      "coef bits": 3
+    },
+    {
+      "Major layer": 4,
+      "image size": 28,
+      "input channels": 128, 
+      "output channels": 256,
+      "sublayer number": 4,
+      "scaling": [13,13,13,12],
+      "pooling": true,
+      "coef bits": 3
+    },
+    {
+      "Major layer": 5,
+      "image size": 14,
+      "input channels": 256,
+      "output channels": 512,
+      "sublayer number": 4,
+      "scaling": [7,7,7,9],
+      "pooling": true,
+      "coef bits": 1
+    }
+  ],
+      "Gain": 1.04131
+}
+

@@ -57,8 +57,7 @@ Pytorch是Facebook开源的一款神经网络框架，可在官网 https://pytor
 将SAI_v1.0.zip解压，Windows 10系统会自动安装驱动，Linux系统需要一些额外的步骤，请参考以下命令为算力棒安装驱动
 
 ```
-$ sudo cp lib/libftd3xx.so.0.5.21 /usr/lib/ 
-$ sudo cp lib/*.rules /etc/udev/rules.d/
+$ sudo cp lib/50-emmc.rules /etc/udev/rules.d/
 ```
 
 ## 模型训练(SAI_ROOT/train)

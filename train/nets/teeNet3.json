@@ -1,0 +1,74 @@
+{
+  "model": [
+    {
+      "Network name": "GnetFC",
+      "Major layer number": 6,
+      "Filter path": "infile"
+    }
+  ],
+  "layer": [
+    {
+      "Major layer": 1,
+      "image size": 224,
+      "input channels": 3,
+      "output channels": 64,
+      "sublayer number": 2,
+      "scaling": [13, 14],
+      "pooling": true,
+      "coef bits": 3 
+    },
+    {
+      "Major layer": 2,
+      "image size": 112,
+      "input channels": 64,
+      "output channels": 128,
+      "sublayer number": 2,
+      "scaling": [13, 13],
+      "pooling": true,
+      "coef bits": 3
+    },
+    {
+      "Major layer": 3,
+      "image size": 56,
+      "input channels": 128,
+      "output channels": 256,
+      "sublayer number": 3,
+      "scaling": [13, 13, 13],
+      "pooling": true,
+      "coef bits": 1
+    },
+    {
+      "Major layer": 4,
+      "image size": 28,
+      "input channels": 256, 
+      "output channels": 256,
+      "sublayer number": 3,
+      "scaling": [14, 15, 15],
+      "pooling": true,
+      "coef bits": 1
+    },
+    {
+      "Major layer": 5,
+      "image size": 14,
+      "input channels": 256,
+      "output channels": 256,
+      "sublayer number": 3,
+      "scaling": [15, 15, 15],
+      "pooling": true,
+      "coef bits": 1
+    },
+    {
+      "Major layer": 6,
+      "image size": 14,
+      "input channels": 256,
+      "output channels": 256,
+      "sublayer number": 3,
+      "scaling": [15, 12, 12],
+      "pooling": false,
+      "coef bits": 1
+    },
+    "Image output format": 4
+  ],
+  "gain":  1.0
+}
+
