@@ -1,11 +1,11 @@
-# TEE_AI SDK使用示例文档
+# TEEClassifier SDK使用示例文档
 
-本文档将描述使用TEE_AI SDK进行推断部署的实际样例，我们首先搭建了一套可复用的代码框架，开发者可以选择性地复用或扩充此框架，以适应其它形式的应用部署。在此框架之上，我们开发了一个用于图片鉴黄的实际样例，供开发者参考和使用。
+本文档将描述使用TEEClassifier SDK进行推断部署的实际样例，我们首先搭建了一套可复用的代码框架，开发者可以选择性地复用或扩充此框架，以适应其它形式的应用部署。在此框架之上，我们开发了一个用于图片分类的实际样例，供开发者参考和使用。
 
-目前我们只提供了C++语言开发的DEMO样例，Python版本将于日后提供。
+目前我们只提供了C++语言开发的DEMO样例。
 
 ## 测试平台
-以下代码在windows 10 + opencv3.4.3 + vs2015平台下测试通过
+以下代码在Windows 10 + OpenCV3.4.3 + Visual Studio 2015平台下测试通过
 
 ## 代码框架
 代码框架分为`Reader`, `Preprocessor`, `EngineWrapper`, `Launcher`四个主要组件
@@ -14,6 +14,7 @@
   * 可通过注册引入一个`Preprocessor`实例，此时`get`方法会在返回处理后的图像
   * 目前只实现了`ImageReader`子类
 * Preproccessor
+  * 图像预处理器，需要与训练模型之前的预处理流程保持一致
   * 基类只定义了接口，传入一个`cv::Mat`类型的图像，返回处理后的图像
   * 用户可根据需求生成子类并进行定制
 * EngineWrapper
@@ -45,6 +46,6 @@
 | ------ | ------ | ------ |
 | cpp/src | DEMO源代码 |  |
 | cpp/windows/TEE_SAI.sln | windows平台工程 | 需要Visual Studio 2015版本及以上 |
-| cpp/windows/lib | windows平台编译和运行需要的静态库和动态库 |  |
+| cpp/windows/lib | windows平台编译和运行需要的动态库 |  |
 | cpp/windows/bin | windows平台编译输出和运行目录 | 直接双击运行run.bat |
 

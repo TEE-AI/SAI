@@ -1,4 +1,4 @@
-# TEE Simple AI (SAI) 用户手册V1.0
+# TEE Simple AI (SAI) User Manual
 本文档内容来自于北京梯易易科技有限公司（TEE），基于本文档内容，可用于评估本公司产品的性能，本文档包括环境创建，基于Pytorch工具的量化模型训练，模型转换，以及如何快速部署在Windows, Linux等平台。
 
 ## 简介
@@ -95,11 +95,11 @@ SAI通过加载training.json文件来进行模型训练与转换，training.json
 
 ## 推断部署(SAI_ROOT/api)
 
-通过前面的模型训练与转换步骤，得到了可以在算力棒上运行部署的模型，接下来我们可以通过SAI的Infer工具(TEE_AI SDK)，结合分类任务，将该模型快速的部署到终端设备上。
+通过前面的模型训练与转换步骤，得到了可以在算力棒上运行部署的模型，接下来我们可以通过SAI的Infer工具(TEE-AI SDK)，结合分类任务，将该模型快速的部署到终端设备上。
 
-目前Infer工具支持windows/linux/arm-linux三个平台的推断部署，后续会增加android/ios等平台支持。
+目前Infer工具只包括用于图片分类的TEEClassifier SDK，支持windows/linux/arm-linux三个平台的推断部署，后续会增加android/ios等平台支持。
 
-### TEE_AI SDK
+### TEE-AI SDK
 所有的推断和部署需要供助于我们所发布的工具库(位于SAI_ROOT/api目录下)来实施，工具库提供了创建推荐引擎，传入样本进行推断，以及资源清理等步骤的函数接口，下面结合头文件INXInferenceEngine.h详细介绍该工具库的使用流程。
 
 #### 创建引擎
@@ -123,7 +123,7 @@ typedef struct {
 } NXEngineConf;
 ```
 
-设定好引擎参数后，同时传入一个nxvoid**类型的变量，调用以下函数生成引擎，生成的引擎由*ppEngine指向的内存区域所表示。回调函数将在下一小节介绍。
+设定好引擎参数后，同时传入一个`nxvoid**`类型的变量，调用以下函数生成引擎，生成的引擎由`*ppEngine`指向的内存区域所表示。回调函数将在下一小节介绍。
 
 ```
 /*  Create inference engine */
@@ -149,7 +149,7 @@ typedef struct {
 } NXImg;
 ```
 
-准备完成后，调用以下接口对图像进行推断，其中engine参数即为上一步中所创建的引擎。该接口以非阻塞模式执行，函数将直接返回并在推断在完成后执行NXEngineConf.pCB回调函数，并以NXEngineConf.pCBData作为回调函数的第一个参数传入。回调函数可以由用户自行定制。
+准备完成后，调用以下接口对图像进行推断，其中engine参数即为上一步中所创建的引擎。该接口以非阻塞模式执行，函数将直接返回并在推断在完成后执行`NXEngineConf.pCB`回调函数，并以`NXEngineConf.pCBData`作为回调函数的第一个参数传入。回调函数可以由用户自行定制。
 
 ```
 /* send an image to engine and engine set *pID value. engine will send the id to callback function */
@@ -172,6 +172,6 @@ NXRet NXDLL NXDestroyInferenceEngine(nxvoid *pEngine);
 ```
 
 ### 使用样例(DEMO)
-位于SAI_ROOT/examples目录下的代码中提供了SDK的使用样例，详细内容请见该目录下的README文件。
+位于SAI_ROOT/examples目录下的代码中提供了用于图片分类的TEEClassifier SDK的使用样例，详细内容请见该目录下的README文件。
 
 
