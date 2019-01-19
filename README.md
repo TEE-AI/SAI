@@ -1,63 +1,23 @@
 # TEE Simple AI (SAI) User Manual
-本文档内容来自于北京梯易易科技有限公司（TEE），基于本文档内容，可用于评估本公司产品的性能，本文档包括环境创建，基于Pytorch工具的量化模型训练，模型转换，以及如何快速部署在Windows, Linux等平台。
 
 ## 简介
-SAI是基于PyTorch的卷积神经网络模型训练，转换，部署工具——可用于将float型卷积神经网络模型转换为定点量化模型（1bit或者3bit），并可通过TEE公司的算力棒来运行，或者从头开始训练量化模型。部署的时候可使用主机的CPU和TEE公司的算力棒通过联合通信进行推断，支持Windows，Linux等主流平台。
-
-基于SAI和本公司出品的算力棒，可以非常方便的训练一个精度损失较低的量化模型，并转换成可以在算力棒上运行的模型，基于转换好的模型，最后SAI还为开发者提供了快速的部署到Windows, Linux等平台的一键部署工具。
+SAI是基于PyTorch的卷积神经网络模型训练，转换，部署工具——可训练得到定点化模型（1bit或者3bit），该模型可在TEE.COM的算力棒产品上运行。支持Windows，Linux等主流平台。
 
 ## 环境依赖
 
-### 硬件与系统要求
-SAI运行环境对主机配置的相关要求如下：
-* CPU >= Intel i5 (推荐i7) 
-* 内存 >=8 GB
-
-当前支持在如下系统上运行
+### 系统要求
+目前支持在如下系统上运行
 * Windows 10
-* Ubuntu LTS 16.04
+* Ubuntu 16.04
 
-### 软件环境依赖
-#### Python
-推荐直接安装anaconda集成python环境，python2.7或者python3.7均可，可在 https://www.anaconda.com/download/ 上根据自己的系统选择下载Windows或者Linux的安装包进行安装。
-
-安装完成后可以在控制台（Windows下打开Windows Command Prompt， Linux下打开Terminal）输入以下命令来确认python环境是否安装成功
-
-```
-$ python
-Python 3.7.0 (default, Jun 28 2018, 08:04:48) [MSC v.1912 64 bit (AMD64)] :: Anaconda, Inc. on win32
-Type "help", "copyright", "credits" or "license" for more information.
->>>
-```
-
-#### Pytorch
-Pytorch是Facebook开源的一款神经网络框架，可在官网 https://pytorch.org/ 自行选择和你的环境相符合的下载命令进行安装，安装完成后，可在控制台（Windows下打开Windows Command Prompt， Linux下打开Terminal）输入以下命令来确认pytorch环境是否安装成功
-
-```
->>> import torch
->>> import torchvision
-```
-
-#### CUDA (可选)
-推荐使用GPU来跑训练，CPU跑训练实在是太慢，你会无法忍受的，^o^.     
-
-若要使用GPU来训练，就需要安装CUDA.一般来说，需要通过以下几步安装CUDA
-1.安装NVIDIA显卡驱动，去官网 (http://www.nvidia.cn/Download/index.aspx?lang=cn) 查找适配自己电脑GPU的驱动
-2.安装CUDA9.0，去官网 (https://developer.nvidia.com/cuda-90-download-archive) 下载
-3.安装cuDNN，去官网 (https://developer.nvidia.com/cudnn) 下载
-
-可通过以下命令来确认GPU是否成功安装:
-
-```
->>> import torch
->>> torch.cuda.is_available()
-```
+### Pytorch版本
+#### 0.4 or higher
 
 #### 安装算力棒驱动
 Windows 10系统会自动安装驱动，Linux系统需要一些额外的步骤，请参考以下命令为算力棒安装驱动
 
 ```
-$ sudo cp lib/50-emmc.rules /etc/udev/rules.d/
+$ sudo cp api/lib/50-emmc.rules /etc/udev/rules.d/
 ```
 
 ## 模型训练(SAI_ROOT/train)

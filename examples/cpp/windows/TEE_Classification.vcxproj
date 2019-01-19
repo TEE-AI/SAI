@@ -67,9 +67,6 @@
       <AdditionalDependencies>opencv_world343.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)TEEClassifierDemo$(TargetExt)</OutputFile>
     </Link>
-    <PostBuildEvent>
-      <Command>copy "$(SolutionDir)lib\*.dll" "$(SolutionDir)bin\"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
