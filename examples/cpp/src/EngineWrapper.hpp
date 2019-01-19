@@ -68,7 +68,7 @@ class EngineWrapper {
 			// printf("%s\n", path);
 			hdll_ = LoadLibrary(path);
 			if (!hdll_) {
-				printf("TEEInference.dll not found. exit.\n");
+				printf("TEEClassifier.dll not found. exit.\n");
 				hdll_ = 0;
 				return false;
 			}
