@@ -46,12 +46,12 @@
 ### 目录结构
 ```
 src
-   `--- demo.cpp, *.cpp, *.h
+   |--- demo.cpp, *.cpp, *.h
 windows
-   `--- TEE_SAI.sln
+   |--- TEE_SAI.sln
    `--- bin
-         `--- TEEClassifierDemo.exe
-         `--- TEEClassifier.dll, *.dll(from 3rdparty)
+         |--- TEEClassifierDemo.exe
+         |--- TEEClassifier.dll, *.dll(from 3rdparty)
          `--- model
               |--- data
               |--- image.list
