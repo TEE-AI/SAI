@@ -1,0 +1,2 @@
+SUBSYSTEMS=="scsi",ATTR{vendor}=="Generic ",ATTR{model}=="MassStorageClass",ATTR{max_sectors}=="240",ATTR{max_sectors}="2048"
+SUBSYSTEMS=="scsi", MODE="0666"
