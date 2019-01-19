@@ -40,12 +40,46 @@
     * 调用`Launcher`的`run`方法，启动执行流程
     * 清理资源并销毁引擎
 
-代码目录结构
+## 样例-图片分类
+我们开发了一个用于图片分类的样例，开发者可参考使用。
 
-| 文件 | 功能 | 描述 |
-| ------ | ------ | ------ |
-| cpp/src | DEMO源代码 |  |
-| cpp/windows/TEE_SAI.sln | windows平台工程 | 需要Visual Studio 2015版本及以上 |
-| cpp/windows/lib | windows平台编译和运行需要的动态库 |  |
-| cpp/windows/bin | windows平台编译输出和运行目录 | 直接双击运行run.bat |
+### 目录结构
+```
+src
+   `--- demo.cpp, *.cpp, *.h
+windows
+   `--- TEE_SAI.sln
+   `--- bin
+         `--- TEEClassifierDemo.exe
+         `--- TEEClassifier.dll, *.dll(from 3rdparty)
+         `--- model
+              |--- data
+              |--- image.list
+              |--- conv.dat
+              |--- fc.dat
+              `--- label.txt
+```
+
+### 执行步骤
+* 下载第三方库，将其置于SAI_ROOT/examples/3rdparty目录中
+  * 百度网盘下载：https://pan.baidu.com/s/1O3IxeB1RRokXwphMoQBJug 提取码：fcl0 
+* 编译工程在cpp/windows/bin中生成TEEClassifierDemo.exe
+* 将SAI_ROOT/api/lib/TEEClassifier.dll中的文件复制到cpp/windows/bin之中
+* 创建cpp/windows/bin/model目录，其中data为存放样本的目录，image.list为对应的文件列表(相对路径)，fc.dat和conv.dat为训练得到的模型，label.txt为分类类别对应的文字名称
+* 填入TEEClassifierDemo.exe所需要的参数，执行即可。参数列表如下：
+```
+-------- Inference Engine ---------
+*   stickNum    int
+*   threadNum   int
+*   modelPath   c_string(default path is ./model)
+*   netType     1: teeNet1; 2: teeNet2; 3: teeNet3
+*   classNum    int
+*   sg_BeginID  Linux: 2; Windows: 0 (Adjust this value based on your system)
+*   delayTime   12000 (Adjust this value based on your computer hardware and models)
+*   stickCNN    c_string
+*   hostNet     c_string
+*   labelName   c_string
+*   fileList    c_string
+-----------------------------------
+```
 
