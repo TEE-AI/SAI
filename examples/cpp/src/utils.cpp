@@ -16,8 +16,6 @@ const char *g_usage[] = {
     _NX_STICK_CNN_,
     _NX_HOST_NET_,
     _NX_LABEL_NAME_,
-    _NX_PROC_TYPE_,
-    _NX_DECODER_NUM_,
     _NX_NET_TYPE_,
     _NX_ClASS_NUM_,
 	_NX_DELAY_TIME_,
