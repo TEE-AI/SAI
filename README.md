@@ -25,6 +25,14 @@ $ sudo cp api/lib/50-emmc.rules /etc/udev/rules.d/
 ### 训练数据准备
 将训练数据分为train和val两个目录，基于标签数目N，创建N个子目录，每个子目录中放入对应标签的图像数据。然后将train和val两个目录放置于SAI_ROOT/train/data目录下。
 
+我们提供了一份猫狗图片分类数据集(百度网盘链接：https://pan.baidu.com/s/1la3C1d0xUBFhvkr0OJOl9w 提取码：ssjx)，该数据可用于训练一个两类(猫狗)分类器。同时我们还提供了一份在这个数据集上训练好的模型供参考。
+
+| Model Name    | Top1 Acc(%) |
+| --------- | -----:|
+|[teeNet1](https://pan.baidu.com/s/1McEakAUyFqYjLKdUgnaj9w)       | 98.75
+|[teeNet2](https://pan.baidu.com/s/1bXgtr3ksOGEH5F70dYBmNA)       | 97.25
+|[teeNet3](https://pan.baidu.com/s/1DmaSE6xaOwoXm0cgnqH4NQ)       | 97.25
+
 ### 模型训练与转换
 因为TEE算力棒仅支持VGG类型的卷积结构，所以SAI的模型训练工具也只提供了基于VGG类型的网络模型训练。当前版本支持三种类型的VGG网络：
 - teeNet1: 标准的VGG16网络，包括13个卷积结构和3个全连接层
@@ -58,8 +66,8 @@ SAI通过加载training.json文件来进行模型训练与转换，training.json
 
 目前API里只包括用于图片分类任务的TEEClassifier library，支持windows/linux/arm-linux三个平台，后续会增加android/ios等平台支持。
 
-在[SAI_ROOT/example](https://github.com/TEE-AI/SAI/tree/master/examples)下提供了各个平台的c++示例工程,展示了API的调用方法。
+在[SAI_ROOT/example](https://github.com/TEE-AI/SAI/tree/master/examples)下提供了各个平台的c++示例工程，展示了API的调用方法。
 
-*ISSUE: Windows版本的library依赖于libeay32.dll，请确定系统路径里存在该dll文件
+*Issue: Windows版本的library依赖于libeay32.dll，请确定系统路径里存在该dll文件。*
 
 
