@@ -1,6 +1,5 @@
 # TEE Simple AI (SAI) User Manual
 
-## 简介
 SAI是基于PyTorch的卷积神经网络模型训练，转换，部署工具——可训练得到定点化模型（1bit或者3bit），该模型可在TEE.COM的算力棒产品上运行。支持Windows，Linux等主流平台。
 
 ## 环境依赖
@@ -14,7 +13,7 @@ SAI是基于PyTorch的卷积神经网络模型训练，转换，部署工具—�
 #### 0.4 or higher
 
 #### 安装算力棒驱动
-Windows 10系统会自动安装驱动，Linux系统需要一些额外的步骤，请参考以下命令为算力棒安装驱动
+Windows 10系统无需安装驱动，Linux系统请参考以下命令为算力棒安装驱动
 
 ```
 $ sudo cp api/lib/50-emmc.rules /etc/udev/rules.d/

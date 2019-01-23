@@ -67,6 +67,7 @@ windows
 * 将SAI_ROOT/api/lib/TEEClassifier.dll中的文件复制到cpp/windows/bin之中
 * 创建cpp/windows/bin/model目录，其中data为存放样本的目录，image.list为对应的文件列表(相对路径)，fc.dat和conv.dat为训练得到的模型，label.txt为分类类别对应的文字名称
 * 填入TEEClassifierDemo.exe所需要的参数，执行即可。参数列表如下：
+
 ```
 -------- Inference Engine ---------
 *   stickNum    int
@@ -83,3 +84,7 @@ windows
 -----------------------------------
 ```
 
+如下命令可做为参考：
+```
+TEEClassifierDemo.exe stickNum 1 threadNum 6 netType 2 classNum 4  sgBeginID 0 delayTime 8000 stickCNN "conv.dat"  hostNet "fc.dat" labelName "label.txt" fileList "image.list"
+```
