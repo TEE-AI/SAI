@@ -1,7 +1,7 @@
 {
   "model": [
     {
-      "Network name": "GnetFC",
+      "Network name": "teeNet3",
       "Major layer number": 6,
       "Filter path": "infile"
     }
