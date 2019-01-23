@@ -38,15 +38,18 @@ else()
 endif()
 
 ##############################################
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib)
+#Set the path to the SAI API
+set(API_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../../api/)
+include_directories(${API_PATH}/include)
+link_directories(${API_PATH}/lib/linux)
 
 #Set the path to your opencv directory
-set(DEP_PATH /Your Opencv path)
+set(DEP_PATH /path to your opencv directory)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 include_directories(${DEP_PATH}/include)
-
 link_directories(${DEP_PATH}/lib)
 
 file(GLOB demo_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/*.h

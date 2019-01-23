@@ -5,7 +5,7 @@
 目前我们只提供了C++语言开发的DEMO样例。
 
 ## 测试平台
-以下代码在Windows 10 + OpenCV3.4.3 + Visual Studio 2015平台下测试通过
+以下代码在Windows 10 + Visual Studio 2015 / Ubuntu 16.04平台下测试通过
 
 ## 代码框架
 代码框架分为`Reader`, `Preprocessor`, `EngineWrapper`, `Launcher`四个主要组件
@@ -58,15 +58,52 @@ windows
               |--- conv.dat
               |--- fc.dat
               `--- label.txt
+linux
+   |--- CMakeLists.txt
+   `--- lib
+         |--- libTEEClassifier.so.0
+         |--- libftd3xxx.so.0
 ```
 
-### 执行步骤
+### Windows执行步骤
 * 下载第三方库，将其置于SAI_ROOT/examples/3rdparty目录中
   * 百度网盘下载：https://pan.baidu.com/s/1O3IxeB1RRokXwphMoQBJug 提取码：fcl0 
 * 编译工程在cpp/windows/bin中生成TEEClassifierDemo.exe
 * 将SAI_ROOT/api/lib/TEEClassifier.dll中的文件复制到cpp/windows/bin之中
 * 创建cpp/windows/bin/model目录，其中data为存放样本的目录，image.list为对应的文件列表(相对路径)，fc.dat和conv.dat为训练得到的模型，label.txt为分类类别对应的文字名称
-* 填入TEEClassifierDemo.exe所需要的参数，执行即可。参数列表如下：
+* 填入TEEClassifierDemo.exe所需要的参数，执行即可。
+* 如下命令可做为参考：
+
+```
+TEEClassifierDemo.exe stickNum 1 threadNum 6 netType 2 classNum 4  sgBeginID 0 delayTime 8000 \ stickCNN "conv.dat"  hostNet "fc.dat" labelName "label.txt" fileList "image.list"
+```
+
+### Linux执行步骤
+
+* 打开CMakeLists.txt, 定位到第47行，设置opencv的路径
+
+```
+#Set the path to your opencv directory
+set(DEP_PATH /path to your opencv directory)
+```
+
+* 参考以下命令进行编译,编译完成可得到可执行文件：TEEClassifierDemo
+
+```
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+```
+
+* 运行相关设置可参考Windows上的设置，将运行时依赖的opencv等依赖库拷贝到和TEEClassifierDemo一起，创建model目录，拷贝模型文件等。然后参考以下命令即可看到实际运行效果：
+
+```
+./TEEClassifierDemo stickNum 1 threadNum 6 netType 2 classNum 4  sgBeginID 0 delayTime 8000 \
+stickCNN "conv.dat"  hostNet "fc.dat" labelName "label.txt" fileList "image.list"
+```
+
+### TEEClassifierDemo参数说明
 
 ```
 -------- Inference Engine ---------
@@ -84,7 +121,4 @@ windows
 -----------------------------------
 ```
 
-如下命令可做为参考：
-```
-TEEClassifierDemo.exe stickNum 1 threadNum 6 netType 2 classNum 4  sgBeginID 0 delayTime 8000 stickCNN "conv.dat"  hostNet "fc.dat" labelName "label.txt" fileList "image.list"
-```
+
