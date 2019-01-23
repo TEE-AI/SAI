@@ -60,9 +60,7 @@ windows
               `--- label.txt
 linux
    |--- CMakeLists.txt
-   `--- lib
-         |--- libTEEClassifier.so.0
-         |--- libftd3xxx.so.0
+
 ```
 
 ### Windows执行步骤
