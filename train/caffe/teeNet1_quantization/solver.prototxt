@@ -1,0 +1,14 @@
+net: "./train.prototxt"
+base_lr: 0.001
+lr_policy: "step"
+test_iter: 40   #完成一次测试需要的迭代次数
+test_interval: 500  #测试间隔
+gamma: 0.1
+stepsize: 30000
+display: 20
+max_iter: 100000
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 5000
+snapshot_prefix: "teeNet1_"
+solver_mode: GPU
