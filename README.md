@@ -26,4 +26,7 @@ $ sudo cp api/lib/50-emmc.rules /etc/udev/rules.d/
 
 *Issue: Windows版本的library依赖于libeay32.dll，请确定系统路径里存在该dll文件。*
 
+## 交流群
+QQ: 781349981
+
 
