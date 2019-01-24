@@ -1,8 +1,18 @@
 # TEE Simple AI (SAI) User Manual
 
-SAI是基于PyTorch的卷积神经网络模型训练，转换，部署工具——可训练得到定点化模型（1bit或者3bit），该模型可在TEE.COM的算力棒产品上运行。支持Windows，Linux等主流平台。
+SAI是基于PyTorch/Caffe的卷积神经网络模型训练，转换，部署工具——可训练得到定点化模型（1bit或者3bit），该模型可在TEE.COM的算力棒产品上运行。支持Windows，Linux等主流平台。
+TODO list:
+- [x] PyTorch quantization model training for classify & conversion
+- [x] Caffe quantization model training for classify
+- [x] Windows/Linux classify inference library and c++ examples
+- [ ] python examples
+- [ ] ARM-Linux/Android inference library and c++ examples
+- [ ] Caffe Faster RCNN model training & conversion & inference library
+- [ ] Pytorch Faster RCNN model training & conversion & inference library
+- [ ] Model Zoo
+- [ ] Benchmark
 
-## 环境依赖
+## 算力棒运行环境
 
 ### 系统 (Win10/Ubuntu 16.04)
 
@@ -27,6 +37,6 @@ $ sudo cp api/lib/50-emmc.rules /etc/udev/rules.d/
 *Issue: Windows版本的library依赖于libeay32.dll，请确定系统路径里存在该dll文件。*
 
 ## 交流群
-QQ: 781349981
+QQ群: 781349981
 
 
