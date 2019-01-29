@@ -1,11 +1,12 @@
 # TEE Simple AI (SAI) User Manual
 
 SAI是基于PyTorch/Caffe的卷积神经网络模型训练，转换，部署工具——可训练得到定点化模型（1bit或者3bit），该模型可在TEE.COM的算力棒产品上运行。支持Windows，Linux等主流平台。
+
 TODO list:
-- [x] PyTorch quantization model training for classify & conversion
-- [x] Caffe quantization model training for classify
+- [x] PyTorch quantization model training for classification & conversion
+- [x] Caffe quantization model training for classification & conversion
 - [x] Windows/Linux classify inference library and c++ examples
-- [ ] python examples
+- [x] Python examples
 - [ ] ARM-Linux/Android inference library and c++ examples
 - [ ] Caffe Faster RCNN model training & conversion & inference library
 - [ ] Pytorch Faster RCNN model training & conversion & inference library

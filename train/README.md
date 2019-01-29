@@ -40,10 +40,56 @@ SAI通过加载training.json文件来进行模型训练与转换，training.json
 *Tips: 关于模型训练，我们建议先使用full模式训练一个全精度的模型F，再通过加载这个全精度模型F来finetune训练量化模型，得到最终的可部署模型。*
 
 ### 基于Caffe
+#### 模型训练
 假定你已经有自己的Caffe环境，那么参考以下几步就可以让你的caffe可以训练量化模型了：
 * Step 1: 将本目录下的caffe.proto文件与CAFFE_DIRECTORY/src/caffe/proto merge一下，注意：不是覆盖
 * Step 2: 将本目录下的conv_svic1_layer.cpp和conv_svic1_layer.cu拷贝到CAFFE_DIRECTORY/src/caffe/layer
 * Step 3：将本目录下的conv_svic1_layer.hpp拷贝到CAFFE_DIRECTORY/include/caffe/layer
 * Step 4: 重新编译caffe
 
-将卷积量化层加入到Caffe后，训练量化模型就很简单了，只需要在train.prototxt文件里用ConvolutionSvic1替换Convolution即可，可以参见teeNet1_quantization下的train.prototxt内容，它定义了一个标准VGG16的量化模型网络(可以称做teeNet1)。
+将卷积量化层加入到Caffe后，训练量化模型就很简单了，只需要在train.prototxt文件里用ConvolutionSvic1替换Convolution即可。
+
+```
+layer {
+  bottom: "data"
+  top: "conv1_1"
+  name: "conv1_1"
+  type: "ConvolutionSvic1"  #use our quantization layer
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  convolution_param {
+    num_output: 64
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "gaussian"
+      std: 0.01
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+	quantization_param {  #define the quantization param
+      coef_precision: 4  #means 3 bit
+    }
+  }
+}
+```
+
+具体示例可以参考teeNet1_quantization目录下的train.prototxt，它定义的是一个标准VGG16网络。
+
+#### 模型转换
+
+训练得到带量化的模型后，使用convert_tool下的脚本convt_cnnsvic.py即可完成将带量化模型转换为TEE算力棒上可以运行的模型了。
+
+```
+python convt_cnnsvic.py --weights teeNet1.caffemodel --network teeNet1.prototxt --config teeNet1.json  --testdata test.bmp --output .
+```
+
+
