@@ -6,8 +6,8 @@
 #include <windows.h>
 #endif
 
-#include "NXErrorCode.h"
-#include "INXInferenceEngine.h"
+#include "TEEErrorCode.h"
+#include "TEEClsEngine.h"
 
 // Function types for interface functions
 typedef NXRet(*LPNXCreateInferenceEngine)(nxvoid **ppEngine, NXEngineConf const *pConf);
@@ -83,7 +83,7 @@ class EngineWrapper {
 #endif
             NXRet status = NXCreateInferenceEngine_(&engine_, config_);
 
-            if (status == NX_RET_SUCCESS && engine_) {
+            if (status == TEE_RET_SUCCESS && engine_) {
                 return true;
             } else {
 				printf("Create Engine Failed: %d\n", status);

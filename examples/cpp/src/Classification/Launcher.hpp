@@ -1,8 +1,8 @@
 #ifndef _LAUNCHER_H_
 #define _LAUNCHER_H_
 
-#include "Reader.h"
-#include "Preprocessor.h"
+#include "../utils/Reader.h"
+#include "../utils/Preprocessor.h"
 #include "EngineWrapper.hpp"
 
 class Launcher {
@@ -27,7 +27,7 @@ class Launcher {
 				param.w = img.cols;
 				param.pixfmt = ePixfmtRGB;
 				NXRet status = engine_->push(&param, &id);
-				if (status != NX_RET_SUCCESS) {
+				if (status != TEE_RET_SUCCESS) {
 					// Error
 					printf("Push task. id: %lld ret: %d\n", id, status);
 				}

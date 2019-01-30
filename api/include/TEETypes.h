@@ -16,7 +16,7 @@ typedef short nxi16;
 typedef unsigned short nxui16;
 typedef long long nxi64;
 typedef unsigned long long nxui64;
-typedef void nxvoid;
+#define nxvoid void
 typedef bool nxbool;
 typedef float nxreal32;
 typedef double nxreal64;

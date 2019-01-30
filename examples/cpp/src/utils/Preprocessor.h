@@ -1,7 +1,7 @@
 #ifndef _PREPROCESSOR_H_
 #define _PREPROCESSOR_H_
 
-#include "INXInferenceEngine.h"
+#include "TEEClsEngine.h"
 
 class Preprocessor {
 public:

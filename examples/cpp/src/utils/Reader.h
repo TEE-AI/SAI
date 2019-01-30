@@ -3,7 +3,6 @@
 
 //#include <opencv2/videoio.hpp>
 #include <opencv2/imgcodecs.hpp>
-#include "INXInferenceEngine.h"
 #include "Preprocessor.h"
 
 class Reader {

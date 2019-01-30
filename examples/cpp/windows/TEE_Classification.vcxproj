@@ -7,16 +7,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\demo.cpp" />
-    <ClCompile Include="..\src\Reader.cpp" />
-    <ClCompile Include="..\src\utils.cpp" />
+    <ClInclude Include="..\src\Classification\EngineWrapper.hpp" />
+    <ClInclude Include="..\src\Classification\Launcher.hpp" />
+    <ClInclude Include="..\src\utils\Preprocessor.h" />
+    <ClInclude Include="..\src\utils\Reader.h" />
+    <ClInclude Include="..\src\utils\utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\EngineWrapper.hpp" />
-    <ClInclude Include="..\src\Launcher.hpp" />
-    <ClInclude Include="..\src\Preprocessor.h" />
-    <ClInclude Include="..\src\Reader.h" />
-    <ClInclude Include="..\src\utils.h" />
+    <ClCompile Include="..\src\Classification\demo.cpp" />
+    <ClCompile Include="..\src\utils\Reader.cpp" />
+    <ClCompile Include="..\src\utils\utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{51BF05C2-8825-4F6A-B643-EE3ADF4FF131}</ProjectGuid>
@@ -46,7 +46,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);..\..\..\api\include;..\..\3rdparty\include</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;..\..\..\api\lib;..\..\3rdparty\lib</LibraryPath>
-    <OutDir>$(SolutionDir)bin</OutDir>
+    <OutDir>$(SolutionDir)bin\Classification</OutDir>
     <TargetName>TEEClassifierDemo</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

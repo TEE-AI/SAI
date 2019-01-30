@@ -3,12 +3,12 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
-#include "Reader.h"
-#include "Preprocessor.h"
+#include "../utils/Reader.h"
+#include "../utils/Preprocessor.h"
 #include "EngineWrapper.hpp"
 #include "Launcher.hpp"
-#include "INXInferenceEngine.h"
-#include "utils.h"
+#include "TEEClsEngine.h"
+#include "../utils/utils.h"
 
 #define _NX_WIN_NAME_	"classify"
 #define _NX_IMG_WIDTH_	224
@@ -105,7 +105,7 @@ NXRet _ResultCB(nxvoid *pPrivateData, nxui8 const *retBuf, nxi32 bufLen, nxui64 
     cv::waitKey(1);
 #endif
 
-    return NX_RET_SUCCESS;
+    return TEE_RET_SUCCESS;
 }
 
 int main(int argc, char *argv[]) {
@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
 
     // Create EngineConfig
     NXEngineConf config;
-	GenerateEngineConfigFromCmdArgs(&config, cmdArgs);
+	GenerateClassificationEngineConfigFromCmdArgs(&config, cmdArgs);
 	
 	// Callback Func & Args
 	_TimeInfo timeInfo(cmdArgs[_NX_MODEL_PATH_] + cmdArgs[_NX_LABEL_NAME_]);

@@ -14,7 +14,10 @@ const char *g_usage[] = {
     _NX_THREAD_NUM_,
     _NX_MODEL_PATH_,
     _NX_STICK_CNN_,
-    _NX_HOST_NET_,
+    _NX_HOST_NET_PROTO_,
+	_NX_HOST_NET_WEIGHTS_,
+	_NX_STICK_USER_INPUT_,
+	_NX_NEG_THRE_FASTER_RCNN_,
     _NX_LABEL_NAME_,
     _NX_NET_TYPE_,
     _NX_ClASS_NUM_,
@@ -59,7 +62,12 @@ static int NXatoi(std::string const &str) {
     else return atoi(str.c_str());
 }
 
-void GenerateEngineConfigFromCmdArgs(NXEngineConf *config, std::map<std::string, std::string> &cmdArgs) {
+static float NXatof(std::string const &str) {
+	if (str.empty()) return 0;
+	else return atof(str.c_str());
+}
+
+void GenerateClassificationEngineConfigFromCmdArgs(NXEngineConf *config, std::map<std::string, std::string> &cmdArgs) {
     std::string *modelPath = new std::string(cmdArgs[_NX_MODEL_PATH_]);
     std::string *stickCNNName = new std::string(*modelPath + cmdArgs[_NX_STICK_CNN_]);
 	std::string *hostNetName = new std::string(*modelPath + cmdArgs[_NX_HOST_NET_]);
@@ -79,6 +87,22 @@ void GenerateEngineConfigFromCmdArgs(NXEngineConf *config, std::map<std::string,
 	//}
 }
 
+void GenerateDetectionEngineConfigFromCmdArgs(TEEDetConfig *config, std::map<std::string, std::string> &cmdArgs) {
+	std::string *modelPath = new std::string(cmdArgs[_NX_MODEL_PATH_]);
+	std::string *stickCNNName = new std::string(*modelPath + cmdArgs[_NX_STICK_CNN_]);
+	std::string *hostNetProtoName = new std::string(*modelPath + cmdArgs[_NX_HOST_NET_PROTO_]);
+	std::string *hostNetWeightsName = new std::string(*modelPath + cmdArgs[_NX_HOST_NET_WEIGHTS_]);
+	std::string *stickUserInputName = new std::string(*modelPath + cmdArgs[_NX_STICK_USER_INPUT_]);
+	config->modelPath = modelPath->c_str();
+	config->hostNetProtoName = hostNetProtoName->c_str();
+	config->hostNetWeightsName = hostNetWeightsName->c_str();
+	config->stickCNNName = stickCNNName->c_str();
+	config->stickUserInputName = stickUserInputName->c_str();
+
+	config->threadNum = NXatoi(cmdArgs[_NX_THREAD_NUM_]);
+	config->neg_thre = NXatof(cmdArgs[_NX_NEG_THRE_FASTER_RCNN_]);
+}
+
 void printfUsage(void) {
 	printf("\nParameter Error. Usage: \n\
 -------- Inference Engine ---------\n\
@@ -92,6 +116,7 @@ void printfUsage(void) {
 *   stickCNN    c_string    \n\
 *   hostNet     c_string    \n\
 *   labelName   c_string    \n\
+*   stickUserInput only for Detection  \n\
 *   fileList    c_string    \n\
 -----------------------------------\n");
 }
