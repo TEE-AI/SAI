@@ -34,8 +34,8 @@
     * 调用`ParseArgs`解析命令行参数
     * 创建`ImageReader`及第1步中自定义的`Preprocessor`子类的实例
     * 创建`EngineWrapper`实例
-        * 生成`NXEngineConfig`: 调用`GenerateEngineConfigFromCmdArgs`从命令行参数生成`NXEngineConfig`的基础字段，再将第2步中定义的回调函数及参数赋给`NXEngineConfig`的`pCB`, `pCBData`字段
-        * 将`NXEngineConfig`传入`EngineWrapper`构造函数，生成`EngineWrapper`实例
+        * 生成`TEEClsConf`: 调用`readFileIntoString`从命令行参数输入的'configFile'字段的json文件中解析出引擎参数，再将第2步中定义的回调函数及参数赋给`NXEngineConfig`的`pCB`, `pCBData`字段
+        * 将`TEEClsConf`传入`EngineWrapper`构造函数，生成`EngineWrapper`实例
     * 创建`Launcher`实例，将`Reader`, `Preprocessor`和`EngineWrapper`实例传入其构造函数
     * 调用`Launcher`的`run`方法，启动执行流程
     * 清理资源并销毁引擎
@@ -54,10 +54,9 @@ windows
          |--- TEEClassifier.dll, *.dll(from 3rdparty)
          `--- model
               |--- data
+              |--- classification.json
               |--- image.list
-              |--- conv.dat
-              |--- fc.dat
-              `--- label.txt
+              |--- label.txt
 linux
    |--- CMakeLists.txt
 
@@ -68,12 +67,28 @@ linux
   * 百度网盘下载：https://pan.baidu.com/s/1O3IxeB1RRokXwphMoQBJug 提取码：fcl0 
 * 编译工程在cpp/windows/bin中生成TEEClassifierDemo.exe
 * 将SAI_ROOT/api/lib/TEEClassifier.dll中的文件复制到cpp/windows/bin之中
-* 创建cpp/windows/bin/model目录，其中data为存放样本的目录，image.list为对应的文件列表(相对路径)，fc.dat和conv.dat为训练得到的模型，label.txt为分类类别对应的文字名称
+* 创建cpp/windows/bin/model目录，其中data为存放样本的目录，classification.json为调用引擎所需的参数，image.list为对应的文件列表(相对路径)，label.txt为分类类别对应的文字名称，classification.json的详细说明为：
+******
+{
+  "Root Path":"D:/SAI/model/", #"Set the path to your model file, make sure conv file and fc file are under the same path"
+  "Stick Begin ID": 0, #The first available eMMC device node. This node is newly created after eMMC dongle is plugged in
+  "Stick Delay Time": 7000, # Delay time (us) between eMMC USB dongle write and read commands, 5000 for gNet3, 12000 for gNet1
+  "Stick Num": 1, #stick number
+  "Thread Num": 6, #thread number
+  "Classify Conf":{  
+    "Class Num": 2, # the class number you want to classify
+    "Net Type": 2, #net type 
+    "Conv File": "conv.dat", # convolution parameters used in stick
+    "FC File":"fc.dat"   # full connetion parameters used in stick
+  }
+}
+****
 * 填入TEEClassifierDemo.exe所需要的参数，执行即可。
 * 如下命令可做为参考：
 
 ```
-TEEClassifierDemo.exe stickNum 1 threadNum 6 netType 2 classNum 4  sgBeginID 0 delayTime 8000 \ stickCNN "conv.dat"  hostNet "fc.dat" labelName "label.txt" fileList "image.list"
+TEEClassifierDemo.exe configFile "classification.json" labelName "label.txt" fileLise "image.list"
+
 ```
 
 ### Linux执行步骤
@@ -97,23 +112,16 @@ $ make
 * 运行相关设置可参考Windows上的设置，将运行时依赖的opencv等依赖库拷贝到和TEEClassifierDemo一起，创建model目录，拷贝模型文件等。然后参考以下命令即可看到实际运行效果：
 
 ```
-./TEEClassifierDemo stickNum 1 threadNum 6 netType 2 classNum 4  sgBeginID 0 delayTime 8000 \
-stickCNN "conv.dat"  hostNet "fc.dat" labelName "label.txt" fileList "image.list"
+./TEEClassifierDemo configFile "classification.json" labelName "label.txt" fileLise "image.list"
+
 ```
 
 ### TEEClassifierDemo参数说明
 
 ```
 -------- Inference Engine ---------
-*   stickNum    int
-*   threadNum   int
-*   modelPath   c_string(default path is ./model)
-*   netType     1: teeNet1; 2: teeNet2; 3: teeNet3
-*   classNum    int
-*   sg_BeginID  Linux: 2; Windows: 0 (Adjust this value based on your system)
-*   delayTime   12000 (Adjust this value based on your computer hardware and models)
-*   stickCNN    c_string
-*   hostNet     c_string
+*   configFile  c_string
+*   dataTestPath   c_string(default path is ./model)
 *   labelName   c_string
 *   fileList    c_string
 -----------------------------------
