@@ -14,7 +14,7 @@
 // Function types for interface functions
 typedef unsigned int(*LPTEEGetVersion)(void);
 
-typedef int(*LPTEEDetCreateEngine)(IN TEEDetConfig const *pcConfig, OUT void **ppEngine);
+typedef int(*LPTEEDetCreateEngine)(IN const char* pConfJsonString, OUT void **ppEngine);
 
 typedef int(*LPTEEDetForward)(IN void *pEngine, IN TEEImage const *pImg, IN const int nOriginalWidth, IN const int nOriginalHeight, OUT TEERet *pRet);
 
@@ -22,8 +22,9 @@ typedef int(*LPTEEDetDestroyEngine)(IN OUT void **ppEngine);
 
 class EngineWrapper {
     public:
-        EngineWrapper(TEEDetConfig *config) {
-            config_ = config;
+        EngineWrapper(const char *pInputJson) {
+			
+			m_pInputJson = pInputJson;
             engine_ = 0;
 #ifdef _WIN32
 			hdll_ = 0;
@@ -53,8 +54,7 @@ class EngineWrapper {
 			TEEDetCreateEngine_ = 0;
 			TEEDetForward_ = 0;
 			TEEDetDestroyEngine_ = 0;
-
-			config_ = 0;
+			
         }
         bool create() {
 #ifdef _WIN32
@@ -82,7 +82,7 @@ class EngineWrapper {
 				printf("get dll interface fail. exit\n");
 			}
 #endif
-			int iRet = TEEDetCreateEngine_(config_ , &engine_ );
+			int iRet = TEEDetCreateEngine_(m_pInputJson, &engine_ );
 
             if (iRet == TEE_RET_SUCCESS && engine_) {
                 return true;
@@ -100,7 +100,7 @@ class EngineWrapper {
 		}
 
     private:
-		TEEDetConfig *config_;
+		const char *m_pInputJson;
         void *engine_;
 
 #ifdef _WIN32

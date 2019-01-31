@@ -30,17 +30,6 @@ extern "C" {
         unsigned char const *data; /* image data */
     }TEEImage;
 
-    typedef struct {
-        int threadNum;
-        int dongleType;
-        float neg_thre;
-        char const *dongleDevice;
-        char const *modelPath;
-		char const *stickCNNName;
-		char const *hostNetProtoName;
-		char const *hostNetWeightsName;
-		char const *stickUserInputName;
-    }TEEDetConfig;
 
     typedef enum {
         eTEEDetHead = 0,    /* detect head */
@@ -73,7 +62,7 @@ extern "C" {
     *           ppEngine -- *ppEngine is created engine pointer.                                            *
     *   RET:    0 -- success; other -- refer to error code table.                                           *
     ********************************************************************************************************/
-    int  NXDLL TEEDetCreateEngine(IN TEEDetConfig const *pcConfig, OUT void **ppEngine);
+    int  NXDLL TEEDetCreateEngine(IN const char* pConfJsonString, OUT void **ppEngine);
 
     /********************************************************************************************************
     *   FUN:    Detect helmet.                                                                              *

@@ -30,7 +30,7 @@ class SimplePreprocessor : public Preprocessor {
 
 int main(int argc, char *argv[]) {
     // Parse cmd-line args
-    if (argc < 9) {
+    if (argc < 5) {
         printfUsage();
         return 1;
     }
@@ -45,15 +45,15 @@ int main(int argc, char *argv[]) {
 
     // Create Image Reader
 	std::vector<std::string> filelist;
-	_GetNameList(cmdArgs[_NX_MODEL_PATH_] + cmdArgs[_NX_FILELIST_], filelist);
+	_GetNameList(cmdArgs[_TEE_DATA_TEST_PATH_] + cmdArgs[_TEE_FILE_LIST_], filelist);
     Reader *reader = new ImageReader(&filelist);
 
-    // Create EngineConfig
-	TEEDetConfig config;
-	GenerateDetectionEngineConfigFromCmdArgs(&config, cmdArgs);
-	
+	std::string strInputJson = cmdArgs[_TEE_DATA_TEST_PATH_] + cmdArgs[_TEE_JSON_CONFIG_];
+
+	std::string jsonData = readFileIntoString(strInputJson.c_str());
+
 	// Create Engine
-    EngineWrapper *engine = new EngineWrapper(&config);
+    EngineWrapper *engine = new EngineWrapper(jsonData.c_str());
 	if (!engine->create()) {
 		// Error
 		printf("Create Engine Failed!\n");

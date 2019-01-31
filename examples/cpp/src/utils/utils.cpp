@@ -10,22 +10,10 @@
 
 
 const char *g_usage[] = {
-	_TEE_CLS_CONFIG_,
-	_NX_STICK_NUM_,
-	_NX_THREAD_NUM_,
-	_NX_MODEL_PATH_,
-	_NX_STICK_CNN_,
-	_NX_HOST_NET_,
-    _NX_HOST_NET_PROTO_,
-	_NX_HOST_NET_WEIGHTS_,
-	_NX_STICK_USER_INPUT_,
-	_NX_NEG_THRE_FASTER_RCNN_,
-    _NX_LABEL_NAME_,
-    _NX_NET_TYPE_,
-    _NX_ClASS_NUM_,
-	_NX_DELAY_TIME_,
-	_NX_SG_BEGIN_ID_,
-	_NX_FILELIST_
+	_TEE_JSON_CONFIG_,
+	_TEE_DATA_TEST_PATH_,
+    _TEE_LABEL_NAME_,
+	_TEE_FILE_LIST_
 };
 
 static std::string GetDefaultModelPath(void) {
@@ -54,57 +42,19 @@ std::map<std::string, std::string> ParseArgs(int argc, char *argv[]) {
             cmdArgs[argv[i]] = argv[i + 1];
         }
     }
-	if (cmdArgs[_NX_MODEL_PATH_].empty()) { cmdArgs[_NX_MODEL_PATH_] = GetDefaultModelPath(); };
-    if (cmdArgs[_NX_MODEL_PATH_].back() != '/' && cmdArgs[_NX_MODEL_PATH_].back() != '\\') cmdArgs[_NX_MODEL_PATH_] += '/';
+	if (cmdArgs[_TEE_DATA_TEST_PATH_].empty()) { cmdArgs[_TEE_DATA_TEST_PATH_] = GetDefaultModelPath(); };
+    if (cmdArgs[_TEE_DATA_TEST_PATH_].back() != '/' && cmdArgs[_TEE_DATA_TEST_PATH_].back() != '\\') cmdArgs[_TEE_DATA_TEST_PATH_] += '/';
     return cmdArgs;
 }
 
-static int NXatoi(std::string const &str) {
-    if (str.empty()) return 0;
-    else return atoi(str.c_str());
-}
 
-static float NXatof(std::string const &str) {
-	if (str.empty()) return 0;
-	else return atof(str.c_str());
-}
-
-void GenerateClsEngineConfigFromCmdArgs(TEEClsConf *config, std::map<std::string, std::string> &cmdArgs) {
-	std::string jsonData = readFileIntoString(cmdArgs[_TEE_CLS_CONFIG_].c_str());
-	config->confJsonData = jsonData.c_str();
-}
-
-void GenerateDetectionEngineConfigFromCmdArgs(TEEDetConfig *config, std::map<std::string, std::string> &cmdArgs) {
-	std::string *modelPath = new std::string(cmdArgs[_NX_MODEL_PATH_]);
-	std::string *stickCNNName = new std::string(*modelPath + cmdArgs[_NX_STICK_CNN_]);
-	std::string *hostNetProtoName = new std::string(*modelPath + cmdArgs[_NX_HOST_NET_PROTO_]);
-	std::string *hostNetWeightsName = new std::string(*modelPath + cmdArgs[_NX_HOST_NET_WEIGHTS_]);
-	std::string *stickUserInputName = new std::string(*modelPath + cmdArgs[_NX_STICK_USER_INPUT_]);
-	config->modelPath = modelPath->c_str();
-	config->hostNetProtoName = hostNetProtoName->c_str();
-	config->hostNetWeightsName = hostNetWeightsName->c_str();
-	config->stickCNNName = stickCNNName->c_str();
-	config->stickUserInputName = stickUserInputName->c_str();
-
-	config->threadNum = NXatoi(cmdArgs[_NX_THREAD_NUM_]);
-	config->neg_thre = NXatof(cmdArgs[_NX_NEG_THRE_FASTER_RCNN_]);
-}
 
 void printfUsage(void) {
 	printf("\nParameter Error. Usage: \n\
 -------- Inference Engine ---------\n\
-*   stickNum    1           \n\
-*   threadNum   6           \n\
-*   modelPath   c_string(default path is ./Model)    \n\
-*   netType   1: teeNet1; 2: teeNet2; 3: teeNet3   \n\
-*   classNum      \n\
-*   sg_BeginID   Linux: 2; Windows: 0 (Adjust this value based on your system)        \n\
-*   delayTime    12000 (Adjust this value based on your computer hardware and models)  \n\
-*   stickCNN    c_string    \n\
-*   hostNetProto     c_string    \n\
-*   hostNetWeights     c_string    \n\
+*   dataTestPath   c_string(default path is ./Model)    \n\
+*   configFile   c_string    \n\
 *   labelName   c_string    \n\
-*   stickUserInput only for Detection  \n\
 *   fileList    c_string    \n\
 -----------------------------------\n");
 }

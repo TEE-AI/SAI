@@ -143,16 +143,16 @@ int main(int argc, char *argv[]) {
 
     // Create Image Reader
 	std::vector<std::string> filelist;
-	_GetNameList(cmdArgs[_NX_MODEL_PATH_] + cmdArgs[_NX_FILELIST_], filelist);
+	_GetNameList(cmdArgs[_TEE_DATA_TEST_PATH_] + cmdArgs[_TEE_FILE_LIST_], filelist);
     Reader *reader = new ImageReader(&filelist);
 
     // Create EngineConfig
 	TEEClsConf config;
-	std::string jsonData = readFileIntoString(cmdArgs[_TEE_CLS_CONFIG_].c_str());
+	std::string jsonData = readFileIntoString(cmdArgs[_TEE_JSON_CONFIG_].c_str());
 	config.confJsonData = jsonData.c_str();
 
 	// Callback Func & Args
-	_TimeInfo timeInfo(cmdArgs[_NX_MODEL_PATH_] + cmdArgs[_NX_LABEL_NAME_]);
+	_TimeInfo timeInfo(cmdArgs[_TEE_DATA_TEST_PATH_] + cmdArgs[_TEE_LABEL_NAME_]);
 	config.pCBData = &timeInfo;
 	config.pCB = _ResultCB;
 
