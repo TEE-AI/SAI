@@ -6,7 +6,6 @@
 #include <windows.h>
 #endif
 
-#include "TEETypes.h"
 #include "TEEErrorCode.h"
 #include "TEEDetEngine.h"
 
@@ -71,7 +70,7 @@ class EngineWrapper {
 			// printf("%s\n", path);
 			hdll_ = LoadLibrary(path);
 			if (!hdll_) {
-				printf("TEEDetectorFasterRcnn.dll not found. exit.\n");
+				printf("TEEDetectorFRCNN.dll not found. exit.\n");
 				hdll_ = 0;
 				return false;
 			}
@@ -93,7 +92,7 @@ class EngineWrapper {
                 return false;
             }
         }
-		NXRet push(TEEImage *img, const int nOriginalWidth, const int nOriginalHeight, TEERet *pRet) {
+		int push(TEEImage *img, const int nOriginalWidth, const int nOriginalHeight, TEERet *pRet) {
             return TEEDetForward_(engine_, img,nOriginalWidth,nOriginalHeight, pRet);
         }
 		void clear() {
@@ -102,7 +101,7 @@ class EngineWrapper {
 
     private:
 		TEEDetConfig *config_;
-        nxvoid *engine_;
+        void *engine_;
 
 #ifdef _WIN32
 		HMODULE hdll_;

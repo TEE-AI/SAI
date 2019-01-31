@@ -12,10 +12,6 @@
 
 #pragma warning (disable:4996)
 
-#define _NX_WIN_NAME_	"Detection_FasterRcnn"
-#define _NX_IMG_WIDTH_	224
-#define _NX_IMG_HEIGHT_	224
-#define _NX_IMG_SCALER_	256.0
 
 #ifndef min
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
