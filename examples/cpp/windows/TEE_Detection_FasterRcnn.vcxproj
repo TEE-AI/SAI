@@ -81,8 +81,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)\bin\Detection_FasterRcnn</OutDir>
-    <IncludePath>..\..\..\api\include;..\..\3rdparty\include;D:\INB\3rdparty\include;$(IncludePath)</IncludePath>
-    <LibraryPath>..\..\3rdparty\lib;..\..\..\api\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\..\..\api\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\..\..\api\lib;$(LibraryPath)</LibraryPath>
     <IntDir>$(Platform)\$(Configuration)\TEE_Detection_FasterRcnn</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

@@ -5,7 +5,11 @@
 #include "../utils/Preprocessor.h"
 #include "EngineWrapper.hpp"
 
-#define _NX_WIN_NAME_	"Detection_FasterRcnn"
+#define _TEE_WIN_NAME_	"Detection_FasterRcnn"
+#define SHOW_WND_WIDTH  1080
+#define SHOW_WND_HEIGHT 720
+#define _TEE_IMG_WIDTH_	 224
+#define _TEE_IMG_HEIGHT_ 224
 
 
 void _draw_preson(cv::Mat &img, TEERet &detRet) {
@@ -35,11 +39,10 @@ class Launcher {
 			engine_ = 0;
         }
         void run() {
-            nxui64 id;
             cv::Mat img = reader_->get();
             while (!img.empty()) {
-				cv::Mat inputMat(224, 224, img.type());
-				cv::resize(img, inputMat, cv::Size(224, 224));
+				cv::Mat inputMat(_TEE_IMG_WIDTH_, _TEE_IMG_HEIGHT_, img.type());
+				cv::resize(img, inputMat, cv::Size(_TEE_IMG_WIDTH_, _TEE_IMG_HEIGHT_));
 				TEEImage param;
 				param.data = inputMat.data;
 				param.fmt = eTeeImgFmtBGR;
@@ -50,15 +53,15 @@ class Launcher {
 				TEERet detRet;
 				detRet.num = 0;
 				detRet.vtDetData = 0;
-				NXRet status = engine_->push(&param, nOriginalWidth, nOriginalHeight, &detRet);
+				int status = engine_->push(&param, nOriginalWidth, nOriginalHeight, &detRet);
 				if (status != TEE_RET_SUCCESS) {
 					// Error
-					printf("Push task ret: %d\n", status);
+					printf("Detect failed!\n");
 				}
 				_draw_preson(img, detRet);
-				cv::Mat outputMat(1080, 720, img.type());
-				cv::resize(img, outputMat, cv::Size(1080, 720));
-				cv::imshow(_NX_WIN_NAME_, outputMat);
+				cv::Mat outputMat(SHOW_WND_WIDTH, SHOW_WND_HEIGHT, img.type());
+				cv::resize(img, outputMat, cv::Size(SHOW_WND_WIDTH, SHOW_WND_HEIGHT));
+				cv::imshow(_TEE_WIN_NAME_, outputMat);
 				cv::waitKey(100);
                 img = reader_->get();
             }
