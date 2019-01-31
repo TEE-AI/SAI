@@ -52,15 +52,28 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${DEP_PATH}/include)
 link_directories(${DEP_PATH}/lib)
 
-file(GLOB demo_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/utils/*.h
+file(GLOB cls_demo_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/utils/*.h
 		    ${CMAKE_CURRENT_SOURCE_DIR}/../src/utils/*.cpp
                     ${CMAKE_CURRENT_SOURCE_DIR}/../src/Classification/*.h
 		    ${CMAKE_CURRENT_SOURCE_DIR}/../src/Classification/*.cpp)
 
-set(inferenceDemo_SRCS
-	${demo_src}
+set(ClsDemo_SRCS
+	${cls_demo_src}
 )
 
-add_EXECUTABLE(TEEClassifierDemo ${inferenceDemo_SRCS})
+file(GLOB detfrcnn_demo_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/utils/*.h
+		    ${CMAKE_CURRENT_SOURCE_DIR}/../src/utils/*.cpp
+                    ${CMAKE_CURRENT_SOURCE_DIR}/../src/Detection_FRCNN/*.h
+		    ${CMAKE_CURRENT_SOURCE_DIR}/../src/Detection_FRCNN/*.cpp)
+
+set(DetFRCNNDemo_SRCS
+	${detfrcnn_demo_src}
+)
+
+add_EXECUTABLE(TEEClassifierDemo ${ClsDemo_SRCS})
 
 target_link_libraries(TEEClassifierDemo TEEClassifier ftd3xx opencv_core opencv_highgui opencv_imgcodecs opencv_imgproc crypto udev pthread)
+
+add_EXECUTABLE(TEEDetFRCNNDemo ${DetFRCNNDemo_SRCS})
+target_link_libraries(TEEDetFRCNNDemo  TEEDetector_FRCNN opencv_core opencv_highgui opencv_imgcodecs opencv_imgproc crypto udev ftd3xx pthread)
+
