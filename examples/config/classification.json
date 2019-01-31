@@ -1,0 +1,16 @@
+{
+  "Root Path": "Set the path to your model file, make sure conv file and fc file are under the same path",
+  "Stick Begin ID": 0,
+  "Stick Delay Time": 7000,
+  "Stick Num": 1,
+  "Thread Num": 6,
+  "Classify Conf":{  
+    "Class Num": 2,
+    "Net Type": 2,
+    "Conv File": "conv.dat",
+    "FC File":"fc.dat"   
+  }
+}
+
+
+
