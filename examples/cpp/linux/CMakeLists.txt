@@ -44,7 +44,7 @@ include_directories(${API_PATH}/include)
 link_directories(${API_PATH}/lib/linux)
 
 #Set the path to your opencv directory
-set(DEP_PATH /path to your opencv directory)
+set(DEP_PATH /Set the path to your opencv directory)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
@@ -52,8 +52,10 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${DEP_PATH}/include)
 link_directories(${DEP_PATH}/lib)
 
-file(GLOB demo_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/*.h
-		    ${CMAKE_CURRENT_SOURCE_DIR}/../src/*.cpp)
+file(GLOB demo_src ${CMAKE_CURRENT_SOURCE_DIR}/../src/utils/*.h
+		    ${CMAKE_CURRENT_SOURCE_DIR}/../src/utils/*.cpp
+                    ${CMAKE_CURRENT_SOURCE_DIR}/../src/Classification/*.h
+		    ${CMAKE_CURRENT_SOURCE_DIR}/../src/Classification/*.cpp)
 
 set(inferenceDemo_SRCS
 	${demo_src}

@@ -30,10 +30,10 @@ class EngineWrapper {
 			TEEClsClearAllTask_ = 0;
 			TEEClsDestroyEngine_ = 0;
 #else
-			TEEClsCreateEngine_ = NXCreateInferenceEngine;
-			TEEClsPushTask_ = NXPushTask;
-			TEEClsClearAllTask_ = NXClearAllTask;
-			TEEClsDestroyEngine_ = NXDestroyInferenceEngine;
+			TEEClsCreateEngine_ = TEEClsCreateEngine;
+			TEEClsPushTask_ = TEEClsPushTask;
+			TEEClsClearAllTask_ = TEEClsClearAllTask;
+			TEEClsDestroyEngine_ = TEEClsDestroyEngine;
 #endif
         }
         ~EngineWrapper() {
