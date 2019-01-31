@@ -128,7 +128,7 @@ int _ResultCB(void *pPrivateData, nxui8 const *retBuf, nxi32 bufLen, nxui64 id, 
 
 int main(int argc, char *argv[]) {
     // Parse cmd-line args
-    if (argc < 9) {
+    if (argc < 6) {
         printfUsage();
         return 1;
     }
@@ -137,7 +137,7 @@ int main(int argc, char *argv[]) {
         // Error
         return 1;
     }
-
+	
 	// Create Preprocessor
 	Preprocessor *processor = new SimplePreprocessor();
 
@@ -148,8 +148,9 @@ int main(int argc, char *argv[]) {
 
     // Create EngineConfig
 	TEEClsConf config;
-	GenerateClsEngineConfigFromCmdArgs(&config, cmdArgs);
-	
+	std::string jsonData = readFileIntoString(cmdArgs[_TEE_CLS_CONFIG_].c_str());
+	config.confJsonData = jsonData.c_str();
+
 	// Callback Func & Args
 	_TimeInfo timeInfo(cmdArgs[_NX_MODEL_PATH_] + cmdArgs[_NX_LABEL_NAME_]);
 	config.pCBData = &timeInfo;

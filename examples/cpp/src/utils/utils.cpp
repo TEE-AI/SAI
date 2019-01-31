@@ -10,10 +10,11 @@
 
 
 const char *g_usage[] = {
-    _NX_STICK_NUM_,
-    _NX_THREAD_NUM_,
-    _NX_MODEL_PATH_,
-    _NX_STICK_CNN_,
+	_TEE_CLS_CONFIG_,
+	_NX_STICK_NUM_,
+	_NX_THREAD_NUM_,
+	_NX_MODEL_PATH_,
+	_NX_STICK_CNN_,
 	_NX_HOST_NET_,
     _NX_HOST_NET_PROTO_,
 	_NX_HOST_NET_WEIGHTS_,
@@ -69,23 +70,8 @@ static float NXatof(std::string const &str) {
 }
 
 void GenerateClsEngineConfigFromCmdArgs(TEEClsConf *config, std::map<std::string, std::string> &cmdArgs) {
-    std::string *modelPath = new std::string(cmdArgs[_NX_MODEL_PATH_]);
-    std::string *stickCNNName = new std::string(*modelPath + cmdArgs[_NX_STICK_CNN_]);
-	std::string *hostNetName = new std::string(*modelPath + cmdArgs[_NX_HOST_NET_]);
-	config->modelPath = modelPath->c_str();
-	config->hostNetName = hostNetName->c_str();
-    config->stickCNNName = stickCNNName->c_str();
-
-    config->stickNum = NXatoi(cmdArgs[_NX_STICK_NUM_]);
-    config->threadNum = NXatoi(cmdArgs[_NX_THREAD_NUM_]);
-    config->netType = NXatoi(cmdArgs[_NX_NET_TYPE_]);
-    config->classNum = NXatoi(cmdArgs[_NX_ClASS_NUM_]);
-	config->sg_beginID = NXatoi(cmdArgs[_NX_SG_BEGIN_ID_]);
-	config->delayTime = NXatoi(cmdArgs[_NX_DELAY_TIME_]);
-	//if (config->delayTime == 0)
-	//{
-	//	config->delayTime = 7000;
-	//}
+	std::string jsonData = readFileIntoString(cmdArgs[_TEE_CLS_CONFIG_].c_str());
+	config->confJsonData = jsonData.c_str();
 }
 
 void GenerateDetectionEngineConfigFromCmdArgs(TEEDetConfig *config, std::map<std::string, std::string> &cmdArgs) {
@@ -162,6 +148,16 @@ void _GetNameList(std::string const &name, std::vector<std::string> &vtName) {
 		if (line.empty()) break;
 		vtName.push_back(npath + "/" + line);
 	}
+}
+
+std::string readFileIntoString(const char * filename)
+{
+	std::ifstream ifile(filename);
+	std::ostringstream buf;
+	char ch;
+	while (buf&&ifile.get(ch))
+		buf.put(ch);
+	return buf.str();
 }
 
 

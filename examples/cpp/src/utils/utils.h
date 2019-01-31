@@ -1,9 +1,12 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <sstream>
+
 #include "TEEClsEngine.h"
 #include "TEEDetEngine.h"
 
+#define _TEE_CLS_CONFIG_ "configFile"
 #define _NX_STICK_NUM_  "stickNum"
 #define _NX_THREAD_NUM_ "threadNum"
 #define _NX_MODEL_PATH_ "modelPath"
@@ -31,6 +34,7 @@ void GenerateDetectionEngineConfigFromCmdArgs(TEEDetConfig *config, std::map<std
 void _GetNameList2(std::string const &name, std::vector<std::string> &vtName);
 void _GetNameList(std::string const &name, std::vector<std::string> &vtName);
 
+std::string readFileIntoString(const char * filename);
 
 
 

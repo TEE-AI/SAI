@@ -41,29 +41,22 @@ extern "C" {
     typedef int (*LPResultCB)(void *pPrivateData, unsigned char const *retBuf, int bufLen, unsigned long long id, int classNum);
 
     typedef struct {
-        int stickNum;
-        int threadNum;
-		int netType;
-		int classNum;
-		int sg_beginID;
-		int delayTime;
-        char const *modelPath; /* stick model + host model path */
-        char const *stickCNNName; /* stick cnn file name (absolute file name) */
-        char const *hostNetName; /* post-process network run on host (absolute file name) */
+		char const* confJsonData; //json format data buffer
         LPResultCB pCB;
         void *pCBData;
     }TEEClsConf;
 
     /*  Create inference engine */
-	int NXDLL NXCreateInferenceEngine(void **ppEngine, TEEClsConf const *pConf);
+	//int NXDLL NXCreateInferenceEngine(void **ppEngine, TEEClsConf const *pConf);
+	int NXDLL TEEClsCreateEngine(void **ppEngine, TEEClsConf const *pConf);
 
     /* send an image to engine and engine set *pID value. engine will send the id to callback function */
-	int NXDLL NXPushTask(void *engine, TEEImg const *pImg, unsigned long long *pID);
+	int NXDLL TEEClsPushTask(void *engine, TEEImg const *pImg, unsigned long long *pID);
 
     /* clear all task */
-	int NXDLL NXClearAllTask(void *engine);
+	int NXDLL TEEClsClearAllTask(void *engine);
 
-	int NXDLL NXDestroyInferenceEngine(void *pEngine);
+	int NXDLL TEEClsDestroyEngine(void *pEngine);
 #ifdef __cplusplus
 }
 #endif

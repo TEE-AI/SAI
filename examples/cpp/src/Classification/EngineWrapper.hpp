@@ -10,13 +10,13 @@
 #include "TEEClsEngine.h"
 
 // Function types for interface functions
-typedef int(*LPNXCreateInferenceEngine)(void **ppEngine, TEEClsConf const *pConf);
+typedef int(*LPTEEClsCreateEngine)(void **ppEngine, TEEClsConf const *pConf);
 
-typedef int(*LPNXPushTask)(void *engine, TEEImg const *pImg, unsigned long long *pID);
+typedef int(*LPTEEClsPushTask)(void *engine, TEEImg const *pImg, unsigned long long *pID);
 
-typedef int(*LPNXClearAllTask)(void *engine);
+typedef int(*LPTEEClsClearAllTask)(void *engine);
 
-typedef int(*LPNXDestroyInferenceEngine)(void *pEngine);
+typedef int(*LPTEEClsDestroyEngine)(void *pEngine);
 
 class EngineWrapper {
     public:
@@ -25,20 +25,20 @@ class EngineWrapper {
             engine_ = 0;
 #ifdef _WIN32
 			hdll_ = 0;
-			NXCreateInferenceEngine_ = 0;
-			NXPushTask_ = 0;
-			NXClearAllTask_ = 0;
-			NXDestroyInferenceEngine_ = 0;
+			TEEClsCreateEngine_ = 0;
+			TEEClsPushTask_ = 0;
+			TEEClsClearAllTask_ = 0;
+			TEEClsDestroyEngine_ = 0;
 #else
-			NXCreateInferenceEngine_ = NXCreateInferenceEngine;
-			NXPushTask_ = NXPushTask;
-			NXClearAllTask_ = NXClearAllTask;
-			NXDestroyInferenceEngine_ = NXDestroyInferenceEngine;
+			TEEClsCreateEngine_ = NXCreateInferenceEngine;
+			TEEClsPushTask_ = NXPushTask;
+			TEEClsClearAllTask_ = NXClearAllTask;
+			TEEClsDestroyEngine_ = NXDestroyInferenceEngine;
 #endif
         }
         ~EngineWrapper() {
             if (engine_) {
-                NXDestroyInferenceEngine_(engine_);
+                TEEClsDestroyEngine_(engine_);
                 engine_ = 0;
             }
 #ifdef _WIN32
@@ -47,10 +47,10 @@ class EngineWrapper {
 				hdll_ = 0;
 			}
 #endif
-			NXCreateInferenceEngine_ = 0;
-			NXPushTask_ = 0;
-			NXClearAllTask_ = 0;
-			NXDestroyInferenceEngine_ = 0;
+			TEEClsCreateEngine_ = 0;
+			TEEClsPushTask_ = 0;
+			TEEClsClearAllTask_ = 0;
+			TEEClsDestroyEngine_ = 0;
 
 			config_ = 0;
         }
@@ -72,16 +72,16 @@ class EngineWrapper {
 				hdll_ = 0;
 				return false;
 			}
-			NXCreateInferenceEngine_ = (LPNXCreateInferenceEngine)GetProcAddress(hdll_, "NXCreateInferenceEngine");
-			NXPushTask_ = (LPNXPushTask)GetProcAddress(hdll_, "NXPushTask");
-			NXClearAllTask_ =(LPNXClearAllTask)GetProcAddress(hdll_, "NXClearAllTask");
-			NXDestroyInferenceEngine_ = (LPNXDestroyInferenceEngine)GetProcAddress(hdll_, "NXDestroyInferenceEngine");
-			if (!NXCreateInferenceEngine_ || !NXPushTask_ || !NXClearAllTask_ || !NXDestroyInferenceEngine_) {
+			TEEClsCreateEngine_ = (LPTEEClsCreateEngine)GetProcAddress(hdll_, "TEEClsCreateEngine");
+			TEEClsPushTask_ = (LPTEEClsPushTask)GetProcAddress(hdll_, "TEEClsPushTask");
+			TEEClsClearAllTask_ =(LPTEEClsClearAllTask)GetProcAddress(hdll_, "TEEClsClearAllTask");
+			TEEClsDestroyEngine_ = (LPTEEClsDestroyEngine)GetProcAddress(hdll_, "TEEClsDestroyEngine");
+			if (!TEEClsCreateEngine_ || !TEEClsPushTask_ || !TEEClsClearAllTask_ || !TEEClsDestroyEngine_) {
 				printf("get dll interface fail. exit\n");
 				return false;
 			}
 #endif
-            int status = NXCreateInferenceEngine_(&engine_, config_);
+            int status = TEEClsCreateEngine_(&engine_, config_);
 
             if (status == TEE_RET_SUCCESS && engine_) {
                 return true;
@@ -92,10 +92,10 @@ class EngineWrapper {
             }
         }
 		int push(TEEImg *img, unsigned long long *id) {
-            return NXPushTask_(engine_, img, id);
+            return TEEClsPushTask_(engine_, img, id);
         }
 		void clear() {
-			NXClearAllTask_(engine_);
+			TEEClsClearAllTask_(engine_);
 		}
 
     private:
@@ -105,10 +105,10 @@ class EngineWrapper {
 #ifdef _WIN32
 		HMODULE hdll_;
 #endif
-		LPNXCreateInferenceEngine NXCreateInferenceEngine_;
-		LPNXPushTask NXPushTask_;
-		LPNXClearAllTask NXClearAllTask_;
-		LPNXDestroyInferenceEngine NXDestroyInferenceEngine_;
+		LPTEEClsCreateEngine TEEClsCreateEngine_;
+		LPTEEClsPushTask TEEClsPushTask_;
+		LPTEEClsClearAllTask TEEClsClearAllTask_;
+		LPTEEClsDestroyEngine TEEClsDestroyEngine_;
 
 };
 

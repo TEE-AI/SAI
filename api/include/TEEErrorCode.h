@@ -1,9 +1,20 @@
-/**************************************
-FUNC: Engine error code table
-DES: 
-AUTHOR: WangGaofei
-DATA: 2018/11/17
-**************************************/
+/*
+*
+* Copyright (c) 2018-2019 TEE.COM. All Rights Reserved
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
 #ifndef _TEE_ERROR_CODE_TABLE_H_
 #define _TEE_ERROR_CODE_TABLE_H_
 
@@ -25,7 +36,7 @@ DATA: 2018/11/17
 #define TEE_RET_IMAGE_SIZE_ERR                  (-304)
 #define TEE_RET_STICK_CREATE_ERR               (-305)
 
-// stick configure file list is invalid
+// stick configure file is invalid
 #define TEE_RET_STICK_CONF_LIST         (-401)
 // stick get buffer fail from sdk
 #define TEE_RET_STICK_GET_BUF           (-402)
