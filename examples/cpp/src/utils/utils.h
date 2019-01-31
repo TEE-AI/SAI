@@ -24,7 +24,7 @@ void printfUsage(void);
 
 std::map<std::string, std::string> ParseArgs(int argc, char *argv[]);
 
-void GenerateClassificationEngineConfigFromCmdArgs(NXEngineConf *config, std::map<std::string, std::string> &cmdArgs);
+void GenerateClsEngineConfigFromCmdArgs(TEEClsConf *config, std::map<std::string, std::string> &cmdArgs);
 
 void GenerateDetectionEngineConfigFromCmdArgs(TEEDetConfig *config, std::map<std::string, std::string> &cmdArgs);
 

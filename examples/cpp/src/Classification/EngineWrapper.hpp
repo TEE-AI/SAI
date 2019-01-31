@@ -10,17 +10,17 @@
 #include "TEEClsEngine.h"
 
 // Function types for interface functions
-typedef NXRet(*LPNXCreateInferenceEngine)(nxvoid **ppEngine, NXEngineConf const *pConf);
+typedef int(*LPNXCreateInferenceEngine)(void **ppEngine, TEEClsConf const *pConf);
 
-typedef NXRet(*LPNXPushTask)(nxvoid *engine, NXImg const *pImg, nxui64 *pID);
+typedef int(*LPNXPushTask)(void *engine, TEEImg const *pImg, unsigned long long *pID);
 
-typedef NXRet(*LPNXClearAllTask)(nxvoid *engine);
+typedef int(*LPNXClearAllTask)(void *engine);
 
-typedef NXRet(*LPNXDestroyInferenceEngine)(nxvoid *pEngine);
+typedef int(*LPNXDestroyInferenceEngine)(void *pEngine);
 
 class EngineWrapper {
     public:
-        EngineWrapper(NXEngineConf *config) {
+        EngineWrapper(TEEClsConf *config) {
             config_ = config;
             engine_ = 0;
 #ifdef _WIN32
@@ -81,7 +81,7 @@ class EngineWrapper {
 				return false;
 			}
 #endif
-            NXRet status = NXCreateInferenceEngine_(&engine_, config_);
+            int status = NXCreateInferenceEngine_(&engine_, config_);
 
             if (status == TEE_RET_SUCCESS && engine_) {
                 return true;
@@ -91,7 +91,7 @@ class EngineWrapper {
                 return false;
             }
         }
-		NXRet push(NXImg *img, nxui64 *id) {
+		int push(TEEImg *img, unsigned long long *id) {
             return NXPushTask_(engine_, img, id);
         }
 		void clear() {
@@ -99,8 +99,8 @@ class EngineWrapper {
 		}
 
     private:
-        NXEngineConf *config_;
-        nxvoid *engine_;
+		TEEClsConf *config_;
+        void *engine_;
 
 #ifdef _WIN32
 		HMODULE hdll_;

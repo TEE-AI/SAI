@@ -18,15 +18,15 @@ class Launcher {
 			engine_ = 0;
         }
         void run() {
-            nxui64 id;
+			unsigned long long id;
             cv::Mat img = reader_->get();
             while (!img.empty()) {
-				NXImg param;
+				TEEImg param;
 				param.data = img.data;
 				param.h = img.rows;
 				param.w = img.cols;
 				param.pixfmt = ePixfmtRGB;
-				NXRet status = engine_->push(&param, &id);
+				int status = engine_->push(&param, &id);
 				if (status != TEE_RET_SUCCESS) {
 					// Error
 					printf("Push task. id: %lld ret: %d\n", id, status);

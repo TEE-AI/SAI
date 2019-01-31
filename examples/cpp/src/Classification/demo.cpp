@@ -15,6 +15,20 @@
 #define _NX_IMG_HEIGHT_	224
 #define _NX_IMG_SCALER_	256.0
 
+typedef int nxi32;
+typedef unsigned int nxui32;
+typedef char nxi8;
+typedef unsigned char nxui8;
+typedef short nxi16;
+typedef unsigned short nxui16;
+typedef long long nxi64;
+typedef unsigned long long nxui64;
+typedef bool nxbool;
+typedef float nxreal32;
+typedef double nxreal64;
+typedef size_t nxsizet;
+
+
 #ifndef min
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
 #endif
@@ -32,8 +46,9 @@ class SimplePreprocessor : public Preprocessor {
         cv::Mat img256;
         double scale = min(image.cols, image.rows) / _NX_IMG_SCALER_;
         int newHeight, newWidth;
-        newHeight = (int)(image.rows / scale);
-        newWidth = (int)(image.cols / scale);
+        //newHeight = (int)(image.rows / scale);
+        //newWidth = (int)(image.cols / scale);
+		newHeight = newWidth = 256;
         cv::resize(mid, img256, cv::Size(newWidth, newHeight));  //Resize to 256, keep the origin ratio
 
         int x, y;
@@ -58,7 +73,7 @@ struct _TimeInfo {
 };
 
 // DEMO-specific Callback for Engine
-NXRet _ResultCB(nxvoid *pPrivateData, nxui8 const *retBuf, nxi32 bufLen, nxui64 id, nxi32 classNum) {
+int _ResultCB(void *pPrivateData, nxui8 const *retBuf, nxi32 bufLen, nxui64 id, nxi32 classNum) {
     static std::chrono::high_resolution_clock::time_point t1_ = std::chrono::high_resolution_clock::now();
     _TimeInfo *info = (_TimeInfo*)pPrivateData;
     if (info->duration++ == 0) {
@@ -101,6 +116,9 @@ NXRet _ResultCB(nxvoid *pPrivateData, nxui8 const *retBuf, nxi32 bufLen, nxui64 
 
     char winn[260] = {0};
     sprintf(winn, "%s_%d", _NX_WIN_NAME_, id & 0xffffffff);
+//	cv::namedWindow(winn, 0);
+//	cv::resizeWindow(winn, _NX_IMG_WIDTH_* 2, _NX_IMG_HEIGHT_ * 2);
+
     cv::imshow(winn, img);
     cv::waitKey(1);
 #endif
@@ -129,8 +147,8 @@ int main(int argc, char *argv[]) {
     Reader *reader = new ImageReader(&filelist);
 
     // Create EngineConfig
-    NXEngineConf config;
-	GenerateClassificationEngineConfigFromCmdArgs(&config, cmdArgs);
+	TEEClsConf config;
+	GenerateClsEngineConfigFromCmdArgs(&config, cmdArgs);
 	
 	// Callback Func & Args
 	_TimeInfo timeInfo(cmdArgs[_NX_MODEL_PATH_] + cmdArgs[_NX_LABEL_NAME_]);

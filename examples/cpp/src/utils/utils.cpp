@@ -14,6 +14,7 @@ const char *g_usage[] = {
     _NX_THREAD_NUM_,
     _NX_MODEL_PATH_,
     _NX_STICK_CNN_,
+	_NX_HOST_NET_,
     _NX_HOST_NET_PROTO_,
 	_NX_HOST_NET_WEIGHTS_,
 	_NX_STICK_USER_INPUT_,
@@ -67,7 +68,7 @@ static float NXatof(std::string const &str) {
 	else return atof(str.c_str());
 }
 
-void GenerateClassificationEngineConfigFromCmdArgs(NXEngineConf *config, std::map<std::string, std::string> &cmdArgs) {
+void GenerateClsEngineConfigFromCmdArgs(TEEClsConf *config, std::map<std::string, std::string> &cmdArgs) {
     std::string *modelPath = new std::string(cmdArgs[_NX_MODEL_PATH_]);
     std::string *stickCNNName = new std::string(*modelPath + cmdArgs[_NX_STICK_CNN_]);
 	std::string *hostNetName = new std::string(*modelPath + cmdArgs[_NX_HOST_NET_]);
@@ -114,7 +115,8 @@ void printfUsage(void) {
 *   sg_BeginID   Linux: 2; Windows: 0 (Adjust this value based on your system)        \n\
 *   delayTime    12000 (Adjust this value based on your computer hardware and models)  \n\
 *   stickCNN    c_string    \n\
-*   hostNet     c_string    \n\
+*   hostNetProto     c_string    \n\
+*   hostNetWeights     c_string    \n\
 *   labelName   c_string    \n\
 *   stickUserInput only for Detection  \n\
 *   fileList    c_string    \n\

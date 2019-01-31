@@ -17,7 +17,6 @@
 
 #ifndef _TEE_CLASSIFY_ENGINE_H_
 #define _TEE_CLASSIFY_ENGINE_H_
-#include "TEETypes.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -29,17 +28,17 @@ extern "C" {
     typedef enum {
         ePixfmtBGR = 0, // BGRBGR
         ePixfmtRGB = 1, // RGBRGB
-    }NXPixFmt;
+    }TEEPixFmt;
 
     typedef struct {
         int w;
         int h;
-        NXPixFmt pixfmt;
+        TEEPixFmt pixfmt;
         unsigned char *data;
-    }NXImg;
+    }TEEImg;
 
     /* Inference engine send result data callback function */
-    typedef NXRet(*LPResultCB)(nxvoid *pPrivateData, unsigned char const *retBuf, int bufLen, unsigned long long id, int classNum);
+    typedef int (*LPResultCB)(void *pPrivateData, unsigned char const *retBuf, int bufLen, unsigned long long id, int classNum);
 
     typedef struct {
         int stickNum;
@@ -52,19 +51,19 @@ extern "C" {
         char const *stickCNNName; /* stick cnn file name (absolute file name) */
         char const *hostNetName; /* post-process network run on host (absolute file name) */
         LPResultCB pCB;
-        nxvoid *pCBData;
-    }NXEngineConf;
+        void *pCBData;
+    }TEEClsConf;
 
     /*  Create inference engine */
-    NXRet NXDLL NXCreateInferenceEngine(nxvoid **ppEngine, NXEngineConf const *pConf);
+	int NXDLL NXCreateInferenceEngine(void **ppEngine, TEEClsConf const *pConf);
 
     /* send an image to engine and engine set *pID value. engine will send the id to callback function */
-    NXRet NXDLL NXPushTask(nxvoid *engine, NXImg const *pImg, unsigned long long *pID);
+	int NXDLL NXPushTask(void *engine, TEEImg const *pImg, unsigned long long *pID);
 
     /* clear all task */
-    NXRet NXDLL NXClearAllTask(nxvoid *engine);
+	int NXDLL NXClearAllTask(void *engine);
 
-    NXRet NXDLL NXDestroyInferenceEngine(nxvoid *pEngine);
+	int NXDLL NXDestroyInferenceEngine(void *pEngine);
 #ifdef __cplusplus
 }
 #endif
