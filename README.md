@@ -8,7 +8,7 @@ TODO list:
 - [x] Windows/Linux classify inference library and c++ examples
 - [x] Python examples
 - [ ] ARM-Linux/Android inference library and c++ examples
-- [ ] Caffe Faster RCNN model training & conversion & inference library
+- [x] Caffe Faster RCNN model training & conversion & inference library
 - [ ] Pytorch Faster RCNN model training & conversion & inference library
 - [ ] Model Zoo
 - [ ] Benchmark
@@ -31,11 +31,11 @@ $ sudo cp api/lib/50-emmc.rules /etc/udev/rules.d/
 
 得到可以在算力棒上运行的模型后，我们可以通过调用SAI的API，在终端设备上很方便的部署上你的模型。
 
-目前API里只包括用于图片分类任务的TEEClassifier library，支持windows/linux/arm-linux三个平台，后续会增加android/ios等平台支持。
+目前API里包括用于图片分类的TEEClassifier library和用于目标检测的基于Faster RCNN的TEEDetectorFRCNN library，支持windows/linux/arm-linux三个平台，后续会增加android/ios等平台支持。
 
-在[SAI_ROOT/example](https://github.com/TEE-AI/SAI/tree/master/examples)下提供了各个平台的c++示例工程，展示了API的调用方法。
+在[SAI_ROOT/example](https://github.com/TEE-AI/SAI/tree/master/examples)下提供了各个平台的c++/python示例工程，展示了API的调用方法。
 
-*Issue: Windows版本的library依赖于libeay32.dll，请确定系统路径里存在该dll文件。*
+*Issue: Windows版本的library依赖于libeay32.dll，请确定系统路径里存在该dll文件,若没有的话，可直接使用api目录下的libeay32.dll。*
 
 ## 交流群
 QQ群: 781349981
