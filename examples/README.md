@@ -32,7 +32,7 @@
 * 如下命令可做为参考：
 
 ```
-TEEClassifierDemo.exe configFile "classification.json" labelName "label.txt" fileLise "image.list"
+TEEClassifierDemo.exe configFile "classification.json" labelName "label.txt" fileList "image.list"
 
 ```
 

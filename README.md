@@ -21,7 +21,7 @@ TODO list:
 Windows 10系统无需安装驱动，Linux系统请参考以下命令为算力棒安装驱动
 
 ```
-$ sudo cp api/lib/50-emmc.rules /etc/udev/rules.d/
+$ sudo cp api/lib/linux/50-emmc.rules /etc/udev/rules.d/
 ```
 
 ## 模型训练([SAI_ROOT/train](https://github.com/TEE-AI/SAI/tree/master/train))
