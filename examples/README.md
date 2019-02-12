@@ -76,9 +76,9 @@ $ make
   "Stick Num": 1, #stick number
   "Thread Num": 6,#thread number
   "FRCNN Conf":{  
-    "Conv File": "gnet1_coef_vgg16.dat",# convolution parameters used in stick
-    "Proto File":"test_head_v4.prototxt",# caffe prototxt file run in PC 
-    "Weights File":"Dongle_ft_head_v4_faster_rcnn_iter_30000.caffemodel",# caffe caffemodel run in PC
+    "Conv File": "vgg16.dat",# convolution parameters used in stick
+    "Proto File":"rpn_rcnn.prototxt",# caffe prototxt file run in PC 
+    "Weights File":"rpn_rcnn.caffemodel",# caffe caffemodel run in PC
 	"Neg Threshold":0.03 #negative threshold that used for detection filter
   }
 }
