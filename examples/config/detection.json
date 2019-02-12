@@ -1,13 +1,13 @@
 {
-  "Root Path": "E:/SAI/examples/cpp/windows/bin/Detection_FasterRcnn/model/",//please change to your own path,"Set the path to your model file, make sure dat file and prototxt & caffemodel file are under the same path"
+  "Root Path": "E:/SAI/examples/cpp/windows/bin/Detection_FasterRcnn/model/",
   "Stick Begin ID": 0,
   "Stick Delay Time": 12000,
   "Stick Num": 1,
   "Thread Num": 6,
   "FRCNN Conf":{  
-    "Conv File": "gnet1_coef_vgg16.dat",
-    "Proto File":"test_head_v4.prototxt",
-    "Weights File":"Dongle_ft_head_v4_faster_rcnn_iter_30000.caffemodel",
+    "Conv File": "vgg16.dat",
+    "Proto File":"rpn_rcnn.prototxt",
+    "Weights File":"rpn_rcnn.caffemodel",
 	"Neg Threshold":0.03
   }
 }
