@@ -88,7 +88,7 @@ $ make
 * 如下命令可做为参考：
 
 ```
-TEE_Detection_FasterRcnn.exe configFile "detection.json"  fileLise "image.list"
+TEE_Detection_FasterRcnn.exe configFile "detection.json"  fileList "image.list"
 
 ```
 
