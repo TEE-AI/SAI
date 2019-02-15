@@ -2,7 +2,7 @@
 要求pytorch version >= 0.4
 
 #### 训练数据准备
-将训练数据分为train和val两个目录，基于标签数目N，创建N个子目录，每个子目录中放入对应标签的图像数据。然后将train和val两个目录放置于SAI_ROOT/train/data目录下。
+将训练数据分为train和val两个目录，基于标签数目N，创建N个子目录，每个子目录中放入对应标签的图像数据。然后将train和val两个目录放置于SAI_ROOT/train/pytorch/data目录下。
 
 我们提供了一份猫狗图片分类数
 据集(百度网盘链接：https://pan.baidu.com/s/1la3C1d0xUBFhvkr0OJOl9w 提取码：ssjx)，该数据可用于训练一个两类(猫狗)分类器。同时我们还提供了一份在这个数据集上训练好的模型供参考。
@@ -19,7 +19,7 @@
 - teeNet2: 简化后的VGG网络，包括18个卷积结构，1个GAP层，1个全连接层
 - teeNet3: 去掉全连接层后的VGG网络，包括16个卷积结构
 
-SAI通过加载training.json文件来进行模型训练与转换，training.json文件放置在SAI_ROOT/train目录下，可通过文本编辑器对其进行编辑修改。training.json文件里的每个关键词描述如下：
+SAI通过加载training.json文件来进行模型训练与转换，training.json文件放置在SAI_ROOT/train/pytorch目录下，可通过文本编辑器对其进行编辑修改。training.json文件里的每个关键词描述如下：
 * num_classes – 类别数目
 * max_epoch – 最大迭代次数 
 * learning_rate – 学习率 
